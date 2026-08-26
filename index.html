@@ -291,12 +291,12 @@
                         setTimeout(typeWriter, 35 + Math.random() * 15);
                     } else {
                         cursor.style.display = 'none';
-                        // Hesitation pause before slow fade-in of about page and node web
+                        // Hesitation pause before slow fade-in of about page and node web across all devices
                         setTimeout(() => {
                             landing.style.display = 'none';
                             main.style.pointerEvents = 'auto';
                             main.style.opacity = '1';
-                            nodeCanvas.style.opacity = '0.04';
+                            nodeCanvas.style.opacity = '0.06';
                         }, 1400);
                     }
                 }
