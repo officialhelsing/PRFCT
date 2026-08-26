@@ -65,9 +65,9 @@
             background: linear-gradient(
                 120deg,
                 #2D2B28 0%,
-                #8C6D36 25%,
-                #D4AF37 50%,
-                #8C6D36 75%,
+                #7A756D 25%,
+                #E8E5DF 50%,
+                #7A756D 75%,
                 #2D2B28 100%
             );
             background-size: 200% auto;
@@ -153,7 +153,8 @@
         <canvas id="node-canvas"></canvas>
         <div class="scale-container">
             <div class="responsive-scaler relative z-10 flex flex-col items-center text-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 space-y-6 p-8 sm:p-10">
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.97)_30%,rgba(255,255,255,0.8)_65%,transparent_100%)] blur-lg -z-10 pointer-events-none"></div>
+                <!-- Organic radial gradient mask behind text so node map fades out underneath -->
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_35%,rgba(255,255,255,0.75)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                 
                 <h1 class="serif-title text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.22] tracking-tight text-justify sm:text-center md:text-justify cursor-default text-stone-800">
                     <span class="color-wave-text italic font-normal">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
@@ -209,9 +210,9 @@
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     if (dist < 220) {
                         const gradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
-                        gradient.addColorStop(0, 'rgba(140, 134, 125, 0.16)');
-                        gradient.addColorStop(0.5, 'rgba(110, 104, 95, 0.10)');
-                        gradient.addColorStop(1, 'rgba(140, 134, 125, 0.16)');
+                        gradient.addColorStop(0, 'rgba(145, 145, 150, 0.12)');
+                        gradient.addColorStop(0.5, 'rgba(120, 120, 125, 0.07)');
+                        gradient.addColorStop(1, 'rgba(145, 145, 150, 0.12)');
                         ctx.strokeStyle = gradient;
                         ctx.beginPath();
                         ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -229,15 +230,15 @@
                 if (node.y < 30 || node.y > height - 30) node.vy *= -1;
 
                 const nodeGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 3);
-                nodeGradient.addColorStop(0, 'rgba(140, 134, 125, 0.32)');
-                nodeGradient.addColorStop(1, 'rgba(90, 85, 78, 0.12)');
+                nodeGradient.addColorStop(0, 'rgba(145, 145, 150, 0.24)');
+                nodeGradient.addColorStop(1, 'rgba(100, 100, 105, 0.08)');
                 ctx.fillStyle = nodeGradient;
 
                 ctx.beginPath();
                 ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
                 ctx.fill();
 
-                ctx.fillStyle = 'rgba(110, 104, 95, 0.38)';
+                ctx.fillStyle = 'rgba(120, 120, 125, 0.28)';
                 ctx.font = '300 11px "Plus Jakarta Sans", sans-serif';
                 ctx.fillText(node.label, node.x + 7, node.y - 7);
             }
@@ -264,24 +265,25 @@
                         const currentString = fullText.substring(0, charIndex);
                         if (currentString.startsWith("Welcome to ")) {
                             const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
+                            typedWelcome.innerHTML = 'Welcome to <strong class="color-wave-text font-semibold">' + prfctPart + '</strong>';
                         } else {
                             typedWelcome.textContent = currentString;
                         }
                         charIndex++;
                         setTimeout(typeWriter, 55 + Math.random() * 20);
                     } else {
+                        // Lingers longer before deleting
                         setTimeout(() => {
                             isDeleting = true;
                             typeWriter();
-                        }, 1200);
+                        }, 3800);
                     }
                 } else {
                     if (charIndex >= 0) {
                         const currentString = fullText.substring(0, charIndex);
                         if (currentString.startsWith("Welcome to ")) {
                             const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
+                            typedWelcome.innerHTML = 'Welcome to <strong class="color-wave-text font-semibold">' + prfctPart + '</strong>';
                         } else if (currentString === "") {
                             typedWelcome.textContent = "";
                         } else {
@@ -296,7 +298,7 @@
                             landing.style.display = 'none';
                             main.style.pointerEvents = 'auto';
                             main.style.opacity = '1';
-                            nodeCanvas.style.opacity = '0.22';
+                            nodeCanvas.style.opacity = '0.085';
                         }, 1400);
                     }
                 }
