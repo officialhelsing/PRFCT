@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plenum Research</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,7 +13,7 @@
                     colors: {
                         charcoal: '#2D2B28',
                         mutedGrey: '#6E685F',
-                        champagne: '#C5A059',
+                        lightGrey: '#9E988F',
                     },
                     fontFamily: {
                         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
@@ -29,7 +28,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -53,8 +52,7 @@
             font-family: 'Cormorant Garamond', serif;
         }
 
-        /* Subtle gold-infused monochromatic shimmer gradient */
-        @keyframes goldMonoWave {
+        @keyframes greyWave {
             0% {
                 background-position: -200% 0;
             }
@@ -63,54 +61,36 @@
             }
         }
 
-        .gold-mono-wave-text {
+        .grey-wave-text {
             background: linear-gradient(
                 120deg,
-                #6E685F 0%,
-                #837B70 20%,
-                #C5A059 40%,
-                #E2C785 50%,
-                #C5A059 60%,
-                #837B70 80%,
-                #6E685F 100%
+                #5A554E 0%,
+                #8E8679 25%,
+                #B0A89B 50%,
+                #8E8679 75%,
+                #5A554E 100%
             );
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
-            animation: goldMonoWave 12s ease-in-out infinite;
+            animation: greyWave 15s ease-in-out infinite;
         }
 
-        .gold-mono-wave-line-vertical {
-            border-image: linear-gradient(
-                180deg,
-                #6E685F 0%,
-                #837B70 20%,
-                #C5A059 40%,
-                #E2C785 50%,
-                #C5A059 60%,
-                #837B70 80%,
-                #6E685F 100%
-            ) 1;
-        }
-
-        /* Initial blank white state view with longer lingering time */
         #blank-view {
             opacity: 1;
-            transition: opacity 3500ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 1500ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Landing view with extra slow fade-in and slightly faster fade-out */
         #landing-view {
             opacity: 0;
-            transition: opacity 6500ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 2000ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Main interface entrance animation */
         @keyframes pageEntranceFade {
             0% {
                 opacity: 0;
-                transform: translateY(16px);
+                transform: translateY(25px);
             }
             100% {
                 opacity: 1;
@@ -122,43 +102,43 @@
             animation: pageEntranceFade 4500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
         }
+
+        #node-canvas {
+            position: absolute;
+            top: -20vh;
+            left: -20vw;
+            width: 140vw;
+            height: 140vh;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 4000ms ease-in-out;
+        }
     </style>
 </head>
 <body class="h-full relative flex flex-col justify-between selection:bg-stone-200 selection:text-charcoal bg-white">
 
     <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-white"></div>
 
-    <!-- Landing View with framed PRFCT -->
-    <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-white opacity-0 transition-opacity duration-[8000ms] ease-in-out">
-        <div class="px-8 py-6 text-center select-none scale-[0.9] sm:scale-100 max-w-lg w-full flex flex-col items-center">
-            <h2 class="serif-title text-[1.35rem] sm:text-[1.75rem] md:text-[2.1rem] font-light tracking-wide text-charcoal py-1">
-                Welcome to <span class="gold-mono-wave-text font-normal">PRFCT</span>
+    <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-white opacity-0">
+        <div class="px-6 py-6 text-center select-none max-w-lg w-full flex flex-col items-center">
+            <h2 class="serif-title text-[1.25rem] sm:text-[1.45rem] md:text-[1.75rem] font-light leading-[1.22] tracking-tight py-1">
+                <span id="typed-welcome" class="text-stone-900 font-light"></span><span id="cursor" class="inline-block w-[1.5px] h-[1.1em] bg-charcoal ml-1 align-middle animate-pulse"></span>
             </h2>
         </div>
     </div>
 
-    <!-- Main Interface View -->
-    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-4 opacity-0 transition-opacity duration-[4500ms] ease-in-out pointer-events-none bg-white">
-        <div class="flex flex-row items-stretch space-x-7 sm:space-x-8 md:space-x-9 my-auto animate-entrance max-w-[36.45rem] w-full scale-[0.729] sm:scale-[0.765] md:scale-[0.81] lg:scale-[0.855] origin-center">
+    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[4500ms] ease-in-out pointer-events-none bg-white overflow-hidden">
+        <canvas id="node-canvas"></canvas>
+        <div class="relative z-10 flex flex-col items-center text-center my-auto animate-entrance w-full max-w-[36.45rem] shrink-0 space-y-6">
             
-            <!-- Vertical Brand Mark with gradient lines and gradient letters -->
-            <div class="pl-6 sm:pl-7 pr-6 sm:pr-7 border-l border-r gold-mono-wave-line-vertical flex flex-col justify-between items-center select-none shrink-0 py-3">
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">P</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">R</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">F</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">C</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">T</span>
-            </div>
+            <h1 class="serif-title text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.22] tracking-tight text-justify sm:text-center md:text-justify cursor-default text-stone-800">
+                <span class="grey-wave-text italic">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
+            </h1>
 
-            <div class="space-y-6 w-full my-auto">
-                <!-- Master Headline with gold-infused monochromatic shimmer gradient -->
-                <h1 class="serif-title text-[1.25rem] sm:text-[1.45rem] md:text-[1.75rem] font-light leading-[1.22] tracking-tight text-justify text-charcoal">
-                    <span class="gold-mono-wave-text font-normal">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
-                </h1>
-
-                <!-- Get in touch contact line -->
-                <p class="text-[0.78rem] sm:text-[0.85rem] md:text-[0.9rem] text-[#8C8275] font-light leading-relaxed tracking-wide text-left">
-                    Get in touch with <a href="mailto:ryan.global@proton.me" class="hover:text-charcoal transition-colors underline underline-offset-4 decoration-stone-300">ryan.global@proton.me</a>
+            <div class="w-full flex justify-end">
+                <p class="text-[0.85rem] sm:text-[0.9rem] font-light leading-relaxed tracking-wide text-stone-600">
+                    Get in touch with <a href="mailto:ryan.global@proton.me" class="text-stone-800 hover:text-stone-500 transition-colors underline underline-offset-4 decoration-stone-300">ryan.global@proton.me</a>
                 </p>
             </div>
 
@@ -168,35 +148,147 @@
     <script>
         lucide.createIcons();
 
-        // Sequence: Shortened blank white linger -> very slow fade-in of welcome -> shorter linger -> slightly faster fade-out -> main interface
+        const canvas = document.getElementById('node-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth * 1.4;
+            height = canvas.height = window.innerHeight * 1.4;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const gainLabels = ["+3,242%", "+824%", "+75%", "+1,420%", "+450%", "+95%", "+312%", "+1,890%", "+64%", "+2,450%", "+510%", "+1,200%", "+320%", "+88%", "+4,100%", "+620%", "+1,150%", "+240%", "+1,650%", "+410%", "+5,120%", "+890%", "+145%", "+2,310%"];
+        const nodes = [];
+        const nodeCount = 90;
+
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: (Math.random() - 0.5) * 0.35,
+                label: gainLabels[Math.floor(Math.random() * gainLabels.length)],
+                size: Math.random() * 2 + 10
+            });
+        }
+
+        function animateNodes() {
+            ctx.clearRect(0, 0, width, height);
+
+            ctx.strokeStyle = 'rgba(74, 70, 65, 0.055)';
+            ctx.lineWidth = 0.8;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 220) {
+                        const gradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
+                        gradient.addColorStop(0, 'rgba(142, 134, 121, 0.07)');
+                        gradient.addColorStop(0.5, 'rgba(90, 85, 78, 0.04)');
+                        gradient.addColorStop(1, 'rgba(142, 134, 121, 0.07)');
+                        ctx.strokeStyle = gradient;
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            for (let node of nodes) {
+                node.x += node.vx;
+                node.y += node.vy;
+
+                if (node.x < 30 || node.x > width - 30) node.vx *= -1;
+                if (node.y < 30 || node.y > height - 30) node.vy *= -1;
+
+                const nodeGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 2.5);
+                nodeGradient.addColorStop(0, 'rgba(90, 85, 78, 0.12)');
+                nodeGradient.addColorStop(1, 'rgba(142, 134, 121, 0.06)');
+                ctx.fillStyle = nodeGradient;
+
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 2.2, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = 'rgba(90, 85, 78, 0.09)';
+                ctx.font = '300 11px "Plus Jakarta Sans", sans-serif';
+                ctx.fillText(node.label, node.x + 6, node.y - 6);
+            }
+
+            requestAnimationFrame(animateNodes);
+        }
+        animateNodes();
+
         window.addEventListener('DOMContentLoaded', () => {
             const blank = document.getElementById('blank-view');
             const landing = document.getElementById('landing-view');
             const main = document.getElementById('main-view');
+            const nodeCanvas = document.getElementById('node-canvas');
+            const typedWelcome = document.getElementById('typed-welcome');
+            const cursor = document.getElementById('cursor');
 
-            // 1. Initial blank page lingers briefly before slowly fading in the welcome page
+            const fullText = "Welcome to PRFCT";
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function typeWriter() {
+                if (!isDeleting) {
+                    if (charIndex <= fullText.length) {
+                        const currentString = fullText.substring(0, charIndex);
+                        if (currentString.startsWith("Welcome to ")) {
+                            const prfctPart = currentString.substring(11);
+                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
+                        } else {
+                            typedWelcome.textContent = currentString;
+                        }
+                        charIndex++;
+                        setTimeout(typeWriter, 55 + Math.random() * 20);
+                    } else {
+                        setTimeout(() => {
+                            isDeleting = true;
+                            typeWriter();
+                        }, 1200);
+                    }
+                } else {
+                    if (charIndex >= 0) {
+                        const currentString = fullText.substring(0, charIndex);
+                        if (currentString.startsWith("Welcome to ")) {
+                            const prfctPart = currentString.substring(11);
+                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
+                        } else if (currentString === "") {
+                            typedWelcome.textContent = "";
+                        } else {
+                            typedWelcome.textContent = currentString;
+                        }
+                        charIndex--;
+                        setTimeout(typeWriter, 35 + Math.random() * 15);
+                    } else {
+                        cursor.style.display = 'none';
+                        // Hesitation pause before slow fade-in of about page
+                        setTimeout(() => {
+                            landing.style.display = 'none';
+                            main.style.pointerEvents = 'auto';
+                            main.style.opacity = '1';
+                            nodeCanvas.style.opacity = '0.05';
+                        }, 1200);
+                    }
+                }
+            }
+
             setTimeout(() => {
                 blank.style.opacity = '0';
                 landing.style.opacity = '1';
 
                 setTimeout(() => {
                     blank.style.display = 'none';
-                }, 3500);
+                    setTimeout(typeWriter, 200);
+                }, 400);
 
-            }, 1200);
-
-            // 2. After welcome page fades in, linger for a shorter time, then fade out
-            setTimeout(() => {
-                landing.style.transition = 'opacity 5000ms cubic-bezier(0.16, 1, 0.3, 1)';
-                landing.style.opacity = '0';
-                
-                // 3. Once landing is faded out, hide it and fade in the main interface view
-                setTimeout(() => {
-                    landing.style.display = 'none';
-                    main.style.pointerEvents = 'auto';
-                    main.style.opacity = '1';
-                }, 5000);
-            }, 6000);
+            }, 250);
         });
     </script>
 </body>
