@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-[#FAF8F5]">
+<html lang="en" class="h-full bg-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,13 +12,9 @@
             theme: {
                 extend: {
                     colors: {
-                        ivory: '#FAF8F5',
-                        sandstone: '#E5DFD5',
-                        taupe: '#8C8275',
                         charcoal: '#2D2B28',
                         mutedGrey: '#6E685F',
                         champagne: '#C5A059',
-                        champagneLight: '#F7F3E9',
                     },
                     fontFamily: {
                         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
@@ -33,7 +29,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@200;300;400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -44,10 +40,10 @@
             overflow: hidden;
             margin: 0;
             padding: 0;
+            background-color: #FFFFFF;
         }
 
         body {
-            background-color: #FAF8F5;
             color: #2D2B28;
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -57,7 +53,7 @@
             font-family: 'Cormorant Garamond', serif;
         }
 
-        /* Subtle gold-infused monochromatic shimmer gradient strictly for Plenum Research Financial Consultant Trust */
+        /* Subtle gold-infused monochromatic shimmer gradient */
         @keyframes goldMonoWave {
             0% {
                 background-position: -200% 0;
@@ -85,11 +81,36 @@
             animation: goldMonoWave 12s ease-in-out infinite;
         }
 
-        /* Slow, graceful page entrance with text raising effect for all elements simultaneously */
+        .gold-mono-wave-line-vertical {
+            border-image: linear-gradient(
+                180deg,
+                #6E685F 0%,
+                #837B70 20%,
+                #C5A059 40%,
+                #E2C785 50%,
+                #C5A059 60%,
+                #837B70 80%,
+                #6E685F 100%
+            ) 1;
+        }
+
+        /* Initial blank white state view with longer lingering time */
+        #blank-view {
+            opacity: 1;
+            transition: opacity 3500ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Landing view with extra slow fade-in and slightly faster fade-out */
+        #landing-view {
+            opacity: 0;
+            transition: opacity 6500ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Main interface entrance animation */
         @keyframes pageEntranceFade {
             0% {
                 opacity: 0;
-                transform: translateY(36px);
+                transform: translateY(16px);
             }
             100% {
                 opacity: 1;
@@ -98,28 +119,39 @@
         }
 
         .animate-entrance {
-            animation: pageEntranceFade 4.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: pageEntranceFade 4500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
         }
     </style>
 </head>
-<body class="h-full relative flex flex-col justify-between selection:bg-stone-300/30 selection:text-charcoal">
+<body class="h-full relative flex flex-col justify-between selection:bg-stone-200 selection:text-charcoal bg-white">
 
-    <main class="relative z-10 w-full h-full flex items-center justify-center p-4">
-        <!-- Exact fixed-proportion wrapper scaled down an additional 10% from previous reference matching 73be66.png perfectly -->
+    <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-white"></div>
+
+    <!-- Landing View with framed PRFCT -->
+    <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-white opacity-0 transition-opacity duration-[8000ms] ease-in-out">
+        <div class="px-8 py-6 text-center select-none scale-[0.9] sm:scale-100 max-w-lg w-full flex flex-col items-center">
+            <h2 class="serif-title text-[1.35rem] sm:text-[1.75rem] md:text-[2.1rem] font-light tracking-wide text-charcoal py-1">
+                Welcome to <span class="gold-mono-wave-text font-normal">PRFCT</span>
+            </h2>
+        </div>
+    </div>
+
+    <!-- Main Interface View -->
+    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-4 opacity-0 transition-opacity duration-[4500ms] ease-in-out pointer-events-none bg-white">
         <div class="flex flex-row items-stretch space-x-7 sm:space-x-8 md:space-x-9 my-auto animate-entrance max-w-[36.45rem] w-full scale-[0.729] sm:scale-[0.765] md:scale-[0.81] lg:scale-[0.855] origin-center">
             
-            <!-- Vertical Brand Mark with matching darker grey separating lines -->
-            <div class="pl-6 sm:pl-7 pr-6 sm:pr-7 border-l border-r border-[#524B43] flex flex-col justify-between items-center select-none shrink-0 py-3">
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] text-[#524B43] leading-none">P</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] text-[#524B43] leading-none">R</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] text-[#524B43] leading-none">F</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] text-[#524B43] leading-none">C</span>
-                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] text-[#524B43] leading-none">T</span>
+            <!-- Vertical Brand Mark with gradient lines and gradient letters -->
+            <div class="pl-6 sm:pl-7 pr-6 sm:pr-7 border-l border-r gold-mono-wave-line-vertical flex flex-col justify-between items-center select-none shrink-0 py-3">
+                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">P</span>
+                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">R</span>
+                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">F</span>
+                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">C</span>
+                <span class="font-sans font-medium tracking-[0.2em] text-[0.85rem] sm:text-[0.95rem] gold-mono-wave-text leading-none">T</span>
             </div>
 
             <div class="space-y-6 w-full my-auto">
-                <!-- Master Headline with gold-infused monochromatic shimmer gradient only on Plenum Research Financial Consultant Trust -->
+                <!-- Master Headline with gold-infused monochromatic shimmer gradient -->
                 <h1 class="serif-title text-[1.25rem] sm:text-[1.45rem] md:text-[1.75rem] font-light leading-[1.22] tracking-tight text-justify text-charcoal">
                     <span class="gold-mono-wave-text font-normal">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
                 </h1>
@@ -135,6 +167,37 @@
 
     <script>
         lucide.createIcons();
+
+        // Sequence: Shortened blank white linger -> very slow fade-in of welcome -> shorter linger -> slightly faster fade-out -> main interface
+        window.addEventListener('DOMContentLoaded', () => {
+            const blank = document.getElementById('blank-view');
+            const landing = document.getElementById('landing-view');
+            const main = document.getElementById('main-view');
+
+            // 1. Initial blank page lingers briefly before slowly fading in the welcome page
+            setTimeout(() => {
+                blank.style.opacity = '0';
+                landing.style.opacity = '1';
+
+                setTimeout(() => {
+                    blank.style.display = 'none';
+                }, 3500);
+
+            }, 1200);
+
+            // 2. After welcome page fades in, linger for a shorter time, then fade out
+            setTimeout(() => {
+                landing.style.transition = 'opacity 5000ms cubic-bezier(0.16, 1, 0.3, 1)';
+                landing.style.opacity = '0';
+                
+                // 3. Once landing is faded out, hide it and fade in the main interface view
+                setTimeout(() => {
+                    landing.style.display = 'none';
+                    main.style.pointerEvents = 'auto';
+                    main.style.opacity = '1';
+                }, 5000);
+            }, 6000);
+        });
     </script>
 </body>
 </html>
