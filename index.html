@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRFCT</title>
+    <title>Plenum Research</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -65,9 +65,9 @@
             background: linear-gradient(
                 120deg,
                 #2D2B28 0%,
-                #7A756D 25%,
-                #E8E5DF 50%,
-                #7A756D 75%,
+                #8C6D36 25%,
+                #D4AF37 50%,
+                #8C6D36 75%,
                 #2D2B28 100%
             );
             background-size: 200% auto;
@@ -91,7 +91,7 @@
         @keyframes pageEntranceFade {
             0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(25px);
             }
             100% {
                 opacity: 1;
@@ -113,10 +113,10 @@
             pointer-events: none;
             z-index: 1;
             opacity: 0;
-            transition: opacity 3000ms ease-in-out;
+            transition: opacity 4000ms ease-in-out;
         }
 
-        /* Responsive scaling container for identical desktop & mobile proportions */
+        /* Responsive scaling wrapper for mobile to maintain exact desktop proportions */
         .scale-container {
             width: 100%;
             height: 100%;
@@ -152,15 +152,13 @@
     <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[4500ms] ease-in-out pointer-events-none bg-white overflow-hidden">
         <canvas id="node-canvas"></canvas>
         <div class="scale-container">
-            <div class="responsive-scaler relative z-10 flex flex-col items-center text-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 space-y-6 p-8 sm:p-10">
-                <!-- Organic radial gradient mask behind text so node map fades out underneath -->
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_35%,rgba(255,255,255,0.75)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
+            <div class="responsive-scaler relative z-10 flex flex-col items-center text-center my-auto animate-entrance w-full max-w-[36.45rem] shrink-0 space-y-6">
                 
                 <h1 class="serif-title text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.22] tracking-tight text-justify sm:text-center md:text-justify cursor-default text-stone-800">
-                    <span class="color-wave-text italic font-normal">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
+                    <span class="color-wave-text italic">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
                 </h1>
 
-                <div class="w-full flex justify-end pt-2">
+                <div class="w-full flex justify-end">
                     <p class="text-[0.85rem] sm:text-[0.9rem] font-light leading-relaxed tracking-wide text-stone-600">
                         Get in touch with <a href="mailto:ryan.global@proton.me" class="text-stone-800 hover:text-stone-500 transition-colors underline underline-offset-4 decoration-stone-300">ryan.global@proton.me</a>
                     </p>
@@ -186,7 +184,7 @@
 
         const gainLabels = ["+3,242%", "+824%", "+75%", "+1,420%", "+450%", "+95%", "+312%", "+1,890%", "+64%", "+2,450%", "+510%", "+1,200%", "+320%", "+88%", "+4,100%", "+620%", "+1,150%", "+240%", "+1,650%", "+410%", "+5,120%", "+890%", "+145%", "+2,310%"];
         const nodes = [];
-        const nodeCount = 120;
+        const nodeCount = 110;
 
         for (let i = 0; i < nodeCount; i++) {
             nodes.push({
@@ -202,7 +200,8 @@
         function animateNodes() {
             ctx.clearRect(0, 0, width, height);
 
-            ctx.lineWidth = 1.0;
+            ctx.strokeStyle = 'rgba(74, 70, 65, 0.035)';
+            ctx.lineWidth = 0.8;
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
                     const dx = nodes[i].x - nodes[j].x;
@@ -210,9 +209,9 @@
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     if (dist < 220) {
                         const gradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
-                        gradient.addColorStop(0, 'rgba(145, 145, 150, 0.12)');
-                        gradient.addColorStop(0.5, 'rgba(120, 120, 125, 0.07)');
-                        gradient.addColorStop(1, 'rgba(145, 145, 150, 0.12)');
+                        gradient.addColorStop(0, 'rgba(212, 175, 55, 0.04)');
+                        gradient.addColorStop(0.5, 'rgba(90, 85, 78, 0.02)');
+                        gradient.addColorStop(1, 'rgba(212, 175, 55, 0.04)');
                         ctx.strokeStyle = gradient;
                         ctx.beginPath();
                         ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -229,18 +228,18 @@
                 if (node.x < 30 || node.x > width - 30) node.vx *= -1;
                 if (node.y < 30 || node.y > height - 30) node.vy *= -1;
 
-                const nodeGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 3);
-                nodeGradient.addColorStop(0, 'rgba(145, 145, 150, 0.24)');
-                nodeGradient.addColorStop(1, 'rgba(100, 100, 105, 0.08)');
+                const nodeGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 2.5);
+                nodeGradient.addColorStop(0, 'rgba(212, 175, 55, 0.08)');
+                nodeGradient.addColorStop(1, 'rgba(90, 85, 78, 0.03)');
                 ctx.fillStyle = nodeGradient;
 
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, 2.2, 0, Math.PI * 2);
                 ctx.fill();
 
-                ctx.fillStyle = 'rgba(120, 120, 125, 0.28)';
+                ctx.fillStyle = 'rgba(90, 85, 78, 0.06)';
                 ctx.font = '300 11px "Plus Jakarta Sans", sans-serif';
-                ctx.fillText(node.label, node.x + 7, node.y - 7);
+                ctx.fillText(node.label, node.x + 6, node.y - 6);
             }
 
             requestAnimationFrame(animateNodes);
@@ -265,25 +264,24 @@
                         const currentString = fullText.substring(0, charIndex);
                         if (currentString.startsWith("Welcome to ")) {
                             const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="color-wave-text font-semibold">' + prfctPart + '</strong>';
+                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
                         } else {
                             typedWelcome.textContent = currentString;
                         }
                         charIndex++;
                         setTimeout(typeWriter, 55 + Math.random() * 20);
                     } else {
-                        // Lingers longer before deleting
                         setTimeout(() => {
                             isDeleting = true;
                             typeWriter();
-                        }, 3800);
+                        }, 1200);
                     }
                 } else {
                     if (charIndex >= 0) {
                         const currentString = fullText.substring(0, charIndex);
                         if (currentString.startsWith("Welcome to ")) {
                             const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="color-wave-text font-semibold">' + prfctPart + '</strong>';
+                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
                         } else if (currentString === "") {
                             typedWelcome.textContent = "";
                         } else {
@@ -293,12 +291,12 @@
                         setTimeout(typeWriter, 35 + Math.random() * 15);
                     } else {
                         cursor.style.display = 'none';
-                        // Hesitation pause before slow fade-in of about page and node web across all devices
+                        // Hesitation pause before slow fade-in of about page and node web
                         setTimeout(() => {
                             landing.style.display = 'none';
                             main.style.pointerEvents = 'auto';
                             main.style.opacity = '1';
-                            nodeCanvas.style.opacity = '0.085';
+                            nodeCanvas.style.opacity = '0.04';
                         }, 1400);
                     }
                 }
