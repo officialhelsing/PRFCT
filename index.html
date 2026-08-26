@@ -264,7 +264,7 @@
                         const currentString = fullText.substring(0, charIndex);
                         if (currentString.startsWith("Welcome to ")) {
                             const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
+                            typedWelcome.innerHTML = 'Welcome to <strong class="color-wave-text font-semibold">' + prfctPart + '</strong>';
                         } else {
                             typedWelcome.textContent = currentString;
                         }
@@ -274,14 +274,14 @@
                         setTimeout(() => {
                             isDeleting = true;
                             typeWriter();
-                        }, 1200);
+                        }, 2800);
                     }
                 } else {
                     if (charIndex >= 0) {
                         const currentString = fullText.substring(0, charIndex);
                         if (currentString.startsWith("Welcome to ")) {
                             const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
+                            typedWelcome.innerHTML = 'Welcome to <strong class="color-wave-text font-semibold">' + prfctPart + '</strong>';
                         } else if (currentString === "") {
                             typedWelcome.textContent = "";
                         } else {
@@ -296,7 +296,7 @@
                             landing.style.display = 'none';
                             main.style.pointerEvents = 'auto';
                             main.style.opacity = '1';
-                            nodeCanvas.style.opacity = '0.22';
+                            nodeCanvas.style.opacity = '0.12';
                         }, 1400);
                     }
                 }
