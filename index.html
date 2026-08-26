@@ -99,16 +99,16 @@
         }
 
         .animate-entrance {
-            animation: pageEntranceFade 4500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: pageEntranceFade 3500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
         }
 
         #node-canvas {
             position: absolute;
-            top: -25vh;
-            left: -25vw;
-            width: 150vw;
-            height: 150vh;
+            top: -20vh;
+            left: -20vw;
+            width: 140vw;
+            height: 140vh;
             pointer-events: none;
             z-index: 1;
             opacity: 0;
@@ -121,23 +121,23 @@
     <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-white"></div>
 
     <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-white opacity-0">
-        <div class="px-6 py-6 text-center select-none scale-[0.85] sm:scale-100 max-w-lg w-full flex flex-col items-center">
-            <h2 class="serif-title text-[1.15rem] sm:text-[1.45rem] md:text-[1.75rem] font-light leading-[1.22] tracking-tight py-1">
+        <div class="px-6 py-6 text-center select-none max-w-lg w-full flex flex-col items-center">
+            <h2 class="serif-title text-[1.25rem] sm:text-[1.45rem] md:text-[1.75rem] font-light leading-[1.22] tracking-tight py-1">
                 <span id="typed-welcome" class="text-stone-900 font-light"></span><span id="cursor" class="inline-block w-[1.5px] h-[1.1em] bg-charcoal ml-1 align-middle animate-pulse"></span>
             </h2>
         </div>
     </div>
 
-    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-[4500ms] ease-in-out pointer-events-none bg-white overflow-hidden">
+    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-4 opacity-0 transition-opacity duration-[4000ms] ease-in-out pointer-events-none bg-white overflow-hidden">
         <canvas id="node-canvas"></canvas>
-        <div class="relative z-10 flex flex-col items-center text-center my-auto animate-entrance max-w-[32rem] sm:max-w-[36.45rem] w-full scale-[0.78] sm:scale-[0.85] md:scale-[0.88] origin-center space-y-6 px-4 sm:px-0">
+        <div class="relative z-10 flex flex-col items-center text-center my-auto animate-entrance w-[36.45rem] shrink-0 scale-[0.55] sm:scale-[0.72] md:scale-[0.82] lg:scale-[0.9] origin-center space-y-6">
             
-            <h1 class="serif-title text-[1.15rem] sm:text-[1.45rem] md:text-[1.75rem] font-light leading-[1.25] tracking-tight text-justify cursor-default text-stone-800">
+            <h1 class="serif-title text-[1.45rem] font-light leading-[1.22] tracking-tight text-justify cursor-default text-stone-800">
                 <span class="grey-wave-text italic">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
             </h1>
 
             <div class="w-full flex justify-end">
-                <p class="text-[0.75rem] sm:text-[0.85rem] md:text-[0.9rem] font-light leading-relaxed tracking-wide text-stone-600">
+                <p class="text-[0.9rem] font-light leading-relaxed tracking-wide text-stone-600">
                     Get in touch with <a href="mailto:ryan.global@proton.me" class="text-stone-800 hover:text-stone-500 transition-colors underline underline-offset-4 decoration-stone-300">ryan.global@proton.me</a>
                 </p>
             </div>
@@ -153,24 +153,22 @@
         let width, height;
 
         function resizeCanvas() {
-            width = canvas.width = window.innerWidth * 1.8;
-            height = canvas.height = window.innerHeight * 1.8;
-            canvas.style.width = (window.innerWidth * 1.8) + 'px';
-            canvas.style.height = (window.innerHeight * 1.8) + 'px';
+            width = canvas.width = window.innerWidth * 1.4;
+            height = canvas.height = window.innerHeight * 1.4;
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        const gainLabels = ["+3,242%", "+824%", "+75%", "+1,420%", "+450%", "+95%", "+312%", "+1,890%", "+64%", "+2,450%", "+510%", "+1,200%", "+320%", "+88%", "+4,100%", "+620%", "+1,150%", "+210%", "+890%", "+1,650%", "+412%", "+1,050%", "+2,310%", "+615%", "+98%"];
+        const gainLabels = ["+3,242%", "+824%", "+75%", "+1,420%", "+450%", "+95%", "+312%", "+1,890%", "+64%", "+2,450%", "+510%", "+1,200%", "+320%", "+88%", "+4,100%", "+620%", "+1,150%", "+240%", "+1,650%", "+410%"];
         const nodes = [];
-        const nodeCount = 200;
+        const nodeCount = 75;
 
         for (let i = 0; i < nodeCount; i++) {
             nodes.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.45,
-                vy: (Math.random() - 0.5) * 0.45,
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: (Math.random() - 0.5) * 0.35,
                 label: gainLabels[Math.floor(Math.random() * gainLabels.length)],
                 size: Math.random() * 2 + 10
             });
@@ -179,31 +177,14 @@
         function animateNodes() {
             ctx.clearRect(0, 0, width, height);
 
-            const centerX = width / 2;
-            const centerY = height / 2;
-
+            ctx.strokeStyle = 'rgba(74, 70, 65, 0.055)';
+            ctx.lineWidth = 0.8;
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
                     const dx = nodes[i].x - nodes[j].x;
                     const dy = nodes[i].y - nodes[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 210) {
-                        const midX = (nodes[i].x + nodes[j].x) / 2;
-                        const midY = (nodes[i].y + nodes[j].y) / 2;
-                        const distToCenter = Math.sqrt(Math.pow(midX - centerX, 2) + Math.pow(midY - centerY, 2));
-                        
-                        let alpha = 0.22;
-                        if (distToCenter < 340) {
-                            alpha = 0.02 + (distToCenter / 340) * 0.18;
-                        }
-
-                        const lineGradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
-                        lineGradient.addColorStop(0, `rgba(74, 70, 65, ${alpha})`);
-                        lineGradient.addColorStop(0.5, `rgba(180, 165, 140, ${alpha * 1.3})`);
-                        lineGradient.addColorStop(1, `rgba(74, 70, 65, ${alpha})`);
-                        
-                        ctx.strokeStyle = lineGradient;
-                        ctx.lineWidth = 0.9;
+                    if (dist < 220) {
                         ctx.beginPath();
                         ctx.moveTo(nodes[i].x, nodes[i].y);
                         ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -212,6 +193,8 @@
                 }
             }
 
+            ctx.fillStyle = 'rgba(74, 70, 65, 0.11)';
+            ctx.font = '300 11px "Plus Jakarta Sans", sans-serif';
             for (let node of nodes) {
                 node.x += node.vx;
                 node.y += node.vy;
@@ -219,26 +202,10 @@
                 if (node.x < 30 || node.x > width - 30) node.vx *= -1;
                 if (node.y < 30 || node.y > height - 30) node.vy *= -1;
 
-                const distToCenter = Math.sqrt(Math.pow(node.x - centerX, 2) + Math.pow(node.y - centerY, 2));
-                let nodeAlpha = 0.42;
-                let textAlpha = 0.42;
-                if (distToCenter < 340) {
-                    const factor = Math.max(0.08, distToCenter / 340);
-                    nodeAlpha *= factor;
-                    textAlpha *= factor;
-                }
-
-                const nodeGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 3);
-                nodeGradient.addColorStop(0, `rgba(90, 85, 78, ${nodeAlpha * 1.5})`);
-                nodeGradient.addColorStop(1, `rgba(180, 160, 135, ${nodeAlpha})`);
-
-                ctx.fillStyle = nodeGradient;
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 2.4, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, 2.2, 0, Math.PI * 2);
                 ctx.fill();
 
-                ctx.fillStyle = `rgba(74, 70, 65, ${textAlpha})`;
-                ctx.font = '300 11px "Plus Jakarta Sans", sans-serif';
                 ctx.fillText(node.label, node.x + 6, node.y - 6);
             }
 
@@ -254,57 +221,50 @@
             const typedWelcome = document.getElementById('typed-welcome');
             const cursor = document.getElementById('cursor');
 
-            const prefixText = "Welcome to ";
-            const boldText = "PRFCT";
-            const fullText = prefixText + boldText;
+            const fullText = "Welcome to PRFCT";
             let charIndex = 0;
             let isDeleting = false;
 
             function typeWriter() {
                 if (!isDeleting) {
-                    if (charIndex < fullText.length) {
-                        const currentChar = fullText.charAt(charIndex);
-                        if (charIndex >= prefixText.length) {
-                            if (charIndex === prefixText.length) {
-                                typedWelcome.innerHTML = prefixText + '<strong class="font-semibold text-stone-900">' + currentChar + '</strong>';
-                            } else {
-                                const strongEl = typedWelcome.querySelector('strong');
-                                strongEl.textContent += currentChar;
-                            }
+                    if (charIndex <= fullText.length) {
+                        const currentString = fullText.substring(0, charIndex);
+                        if (currentString.startsWith("Welcome to ")) {
+                            const prfctPart = currentString.substring(11);
+                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
                         } else {
-                            typedWelcome.textContent += currentChar;
+                            typedWelcome.textContent = currentString;
                         }
                         charIndex++;
-                        setTimeout(typeWriter, 65 + Math.random() * 30);
+                        setTimeout(typeWriter, 55 + Math.random() * 20);
                     } else {
                         setTimeout(() => {
                             isDeleting = true;
                             typeWriter();
-                        }, 1800);
+                        }, 1200);
                     }
                 } else {
-                    if (charIndex > 0) {
-                        charIndex--;
-                        if (charIndex >= prefixText.length) {
-                            const strongEl = typedWelcome.querySelector('strong');
-                            if (strongEl) {
-                                strongEl.textContent = strongEl.textContent.slice(0, -1);
-                            }
+                    if (charIndex >= 0) {
+                        const currentString = fullText.substring(0, charIndex);
+                        if (currentString.startsWith("Welcome to ")) {
+                            const prfctPart = currentString.substring(11);
+                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
+                        } else if (currentString === "") {
+                            typedWelcome.textContent = "";
                         } else {
-                            typedWelcome.textContent = fullText.substring(0, charIndex);
+                            typedWelcome.textContent = currentString;
                         }
-                        setTimeout(typeWriter, 35);
+                        charIndex--;
+                        setTimeout(typeWriter, 35 + Math.random() * 15);
                     } else {
                         cursor.style.display = 'none';
-                        landing.style.transition = 'opacity 1200ms cubic-bezier(0.16, 1, 0.3, 1)';
-                        landing.style.opacity = '0';
-                        
+                        // Add a hesitation pause after deletion finishes before fading into the about page
                         setTimeout(() => {
                             landing.style.display = 'none';
                             main.style.pointerEvents = 'auto';
                             main.style.opacity = '1';
-                            nodeCanvas.style.opacity = '0.35';
-                        }, 800);
+                            nodeCanvas.style.opacity = '0.1';
+                        }, 900);
                     }
                 }
             }
