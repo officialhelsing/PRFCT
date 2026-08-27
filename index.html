@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRFCT</title>
     
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,10 +26,10 @@
         }
     </script>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts including Bold Italic for Garamond -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -52,46 +53,20 @@
             font-family: 'Cormorant Garamond', serif;
         }
 
-        @keyframes colorWave {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
-        .color-wave-text {
-            background: linear-gradient(
-                120deg,
-                #2D2B28 0%,
-                #8C6D36 25%,
-                #D4AF37 50%,
-                #8C6D36 75%,
-                #2D2B28 100%
-            );
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: colorWave 9s ease-in-out infinite;
-        }
-
         #blank-view {
             opacity: 1;
-            transition: opacity 1500ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         #landing-view {
             opacity: 0;
-            transition: opacity 2000ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Slower, more gradual fade-in for about page */
         @keyframes pageEntranceFade {
             0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(12px);
             }
             100% {
                 opacity: 1;
@@ -100,23 +75,21 @@
         }
 
         .animate-entrance {
-            animation: pageEntranceFade 4500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
+            animation: pageEntranceFade 2500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         #node-canvas {
             position: absolute;
-            top: -20vh;
-            left: -20vw;
-            width: 140vw;
-            height: 140vh;
+            top: -10vh;
+            left: -10vw;
+            width: 120vw;
+            height: 120vh;
             pointer-events: none;
             z-index: 1;
             opacity: 0;
-            transition: opacity 3000ms ease-in-out;
+            transition: opacity 2500ms ease-in-out;
         }
 
-        /* Responsive scaling container for identical desktop & mobile proportions */
         .scale-container {
             width: 100%;
             height: 100%;
@@ -127,42 +100,48 @@
 
         @media (max-width: 640px) {
             .responsive-scaler {
-                transform: scale(0.82);
+                transform: scale(0.9);
                 transform-origin: center;
-                width: 115vw;
-                max-width: none;
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
             }
         }
     </style>
 </head>
 <body class="h-full relative flex flex-col justify-between selection:bg-stone-200 selection:text-charcoal bg-white">
 
-    <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-white"></div>
+    <!-- Initial blank screen transition -->
+    <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-white pointer-events-none"></div>
 
-    <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-white opacity-0">
-        <div class="px-6 py-6 text-center select-none max-w-lg w-full flex flex-col items-center">
-            <h2 class="serif-title text-[1.25rem] sm:text-[1.45rem] md:text-[1.75rem] font-light leading-[1.22] tracking-tight py-1">
-                <span id="typed-welcome" class="text-stone-900 font-light"></span><span id="cursor" class="inline-block w-[1.5px] h-[1.1em] bg-charcoal ml-1 align-middle animate-pulse"></span>
+    <!-- Welcome / Typing view -->
+    <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-white opacity-0 pointer-events-none">
+        <div class="px-6 py-6 text-center select-none max-w-lg w-full flex flex-col items-center justify-center">
+            <h2 class="serif-title text-charcoal text-[1.35rem] sm:text-[1.6rem] md:text-[1.85rem] font-light leading-[1.22] tracking-tight py-1 min-h-[3rem] flex items-center justify-center">
+                <span id="typed-text"></span><span id="typing-cursor" class="inline-block text-stone-800 font-mono ml-0.5 animate-pulse align-baseline">_</span>
             </h2>
         </div>
     </div>
 
-    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[4500ms] ease-in-out pointer-events-none bg-white overflow-hidden">
+    <!-- Main content view -->
+    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-white overflow-hidden">
         <canvas id="node-canvas"></canvas>
-        <div class="scale-container">
-            <div class="responsive-scaler relative z-10 flex flex-col items-center text-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 space-y-6 p-8 sm:p-10">
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.97)_30%,rgba(255,255,255,0.8)_65%,transparent_100%)] blur-lg -z-10 pointer-events-none"></div>
-                
-                <h1 class="serif-title text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.22] tracking-tight text-justify sm:text-center md:text-justify cursor-default text-stone-800">
-                    <span class="color-wave-text italic font-normal">Plenum Research Financial Consultant Trust</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
-                </h1>
 
-                <div class="w-full flex justify-end pt-2">
-                    <p class="text-[0.85rem] sm:text-[0.9rem] font-light leading-relaxed tracking-wide text-stone-600">
-                        Get in touch with <a href="mailto:ryan.global@proton.me" class="text-stone-800 hover:text-stone-500 transition-colors underline underline-offset-4 decoration-stone-300">ryan.global@proton.me</a>
-                    </p>
+        <div class="scale-container">
+            <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-6">
+                
+                <!-- Main body paragraph (Justified) -->
+                <div class="relative w-full">
+                    <!-- Subtle radial mask behind text -->
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_35%,rgba(255,255,255,0.75)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
+                    
+                    <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default text-justify">
+                        <span class="italic font-normal text-stone-500">Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
+                    </h1>
+                </div>
+
+                <!-- Contact section (Right Aligned) -->
+                <div class="w-full flex justify-end items-center pt-2">
+                    <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 underline underline-offset-4 decoration-stone-300 transition-colors duration-300 font-medium">
+                        ryan.global@proton.me
+                    </a>
                 </div>
 
             </div>
@@ -170,148 +149,158 @@
     </main>
 
     <script>
-        lucide.createIcons();
+        function initNodeCanvas() {
+            const canvas = document.getElementById('node-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let width, height;
+            let nodes = [];
+            const nodeCount = 35;
 
-        const canvas = document.getElementById('node-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
+            function resize() {
+                width = canvas.width = window.innerWidth * 1.2;
+                height = canvas.height = window.innerHeight * 1.2;
+            }
 
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth * 1.4;
-            height = canvas.height = window.innerHeight * 1.4;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+            class Node {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.25;
+                    this.vy = (Math.random() - 0.5) * 0.25;
+                    this.radius = Math.random() * 1.5 + 1;
+                }
 
-        const gainLabels = ["+3,242%", "+824%", "+75%", "+1,420%", "+450%", "+95%", "+312%", "+1,890%", "+64%", "+2,450%", "+510%", "+1,200%", "+320%", "+88%", "+4,100%", "+620%", "+1,150%", "+240%", "+1,650%", "+410%", "+5,120%", "+890%", "+145%", "+2,310%"];
-        const nodes = [];
-        const nodeCount = 120;
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
 
-        for (let i = 0; i < nodeCount; i++) {
-            nodes.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.35,
-                vy: (Math.random() - 0.5) * 0.35,
-                label: gainLabels[Math.floor(Math.random() * gainLabels.length)],
-                size: Math.random() * 2 + 10
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(110, 104, 95, 0.25)';
+                    ctx.fill();
+                }
+            }
+
+            function setupNodes() {
+                nodes = [];
+                for (let i = 0; i < nodeCount; i++) {
+                    nodes.push(new Node());
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < nodes.length; i++) {
+                    nodes[i].update();
+                    nodes[i].draw();
+
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 140) {
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.12 * (1 - dist / 140)})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                setupNodes();
             });
+
+            resize();
+            setupNodes();
+            animate();
         }
 
-        function animateNodes() {
-            ctx.clearRect(0, 0, width, height);
+        document.addEventListener('DOMContentLoaded', () => {
+            initNodeCanvas();
 
-            ctx.lineWidth = 1.0;
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 220) {
-                        const gradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
-                        gradient.addColorStop(0, 'rgba(140, 134, 125, 0.16)');
-                        gradient.addColorStop(0.5, 'rgba(110, 104, 95, 0.10)');
-                        gradient.addColorStop(1, 'rgba(140, 134, 125, 0.16)');
-                        ctx.strokeStyle = gradient;
-                        ctx.beginPath();
-                        ctx.moveTo(nodes[i].x, nodes[i].y);
-                        ctx.lineTo(nodes[j].x, nodes[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            for (let node of nodes) {
-                node.x += node.vx;
-                node.y += node.vy;
-
-                if (node.x < 30 || node.x > width - 30) node.vx *= -1;
-                if (node.y < 30 || node.y > height - 30) node.vy *= -1;
-
-                const nodeGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 3);
-                nodeGradient.addColorStop(0, 'rgba(140, 134, 125, 0.32)');
-                nodeGradient.addColorStop(1, 'rgba(90, 85, 78, 0.12)');
-                ctx.fillStyle = nodeGradient;
-
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
-                ctx.fill();
-
-                ctx.fillStyle = 'rgba(110, 104, 95, 0.38)';
-                ctx.font = '300 11px "Plus Jakarta Sans", sans-serif';
-                ctx.fillText(node.label, node.x + 7, node.y - 7);
-            }
-
-            requestAnimationFrame(animateNodes);
-        }
-        animateNodes();
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const blank = document.getElementById('blank-view');
-            const landing = document.getElementById('landing-view');
-            const main = document.getElementById('main-view');
+            const blankView = document.getElementById('blank-view');
+            const landingView = document.getElementById('landing-view');
+            const mainView = document.getElementById('main-view');
+            const typedTextElement = document.getElementById('typed-text');
             const nodeCanvas = document.getElementById('node-canvas');
-            const typedWelcome = document.getElementById('typed-welcome');
-            const cursor = document.getElementById('cursor');
 
-            const fullText = "Welcome to PRFCT";
+            const prefix = "Welcome to ";
+            const brand = "PRFCT";
+            const totalLen = prefix.length + brand.length;
             let charIndex = 0;
-            let isDeleting = false;
 
-            function typeWriter() {
-                if (!isDeleting) {
-                    if (charIndex <= fullText.length) {
-                        const currentString = fullText.substring(0, charIndex);
-                        if (currentString.startsWith("Welcome to ")) {
-                            const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
-                        } else {
-                            typedWelcome.textContent = currentString;
-                        }
-                        charIndex++;
-                        setTimeout(typeWriter, 55 + Math.random() * 20);
-                    } else {
-                        setTimeout(() => {
-                            isDeleting = true;
-                            typeWriter();
-                        }, 1200);
-                    }
+            // Step 1: Initial fade in of landing screen
+            setTimeout(() => {
+                blankView.style.opacity = '0';
+                landingView.style.opacity = '1';
+
+                // Step 2: Smooth uniform typing
+                setTimeout(typeNextChar, 500);
+            }, 300);
+
+            function renderTypedText(index) {
+                if (index <= prefix.length) {
+                    typedTextElement.textContent = prefix.substring(0, index);
                 } else {
-                    if (charIndex >= 0) {
-                        const currentString = fullText.substring(0, charIndex);
-                        if (currentString.startsWith("Welcome to ")) {
-                            const prfctPart = currentString.substring(11);
-                            typedWelcome.innerHTML = 'Welcome to <strong class="font-semibold text-stone-900">' + prfctPart + '</strong>';
-                        } else if (currentString === "") {
-                            typedWelcome.textContent = "";
-                        } else {
-                            typedWelcome.textContent = currentString;
-                        }
-                        charIndex--;
-                        setTimeout(typeWriter, 35 + Math.random() * 15);
-                    } else {
-                        cursor.style.display = 'none';
-                        // Hesitation pause before slow fade-in of about page and node web across all devices
-                        setTimeout(() => {
-                            landing.style.display = 'none';
-                            main.style.pointerEvents = 'auto';
-                            main.style.opacity = '1';
-                            nodeCanvas.style.opacity = '0.22';
-                        }, 1400);
-                    }
+                    const typedBrand = brand.substring(0, index - prefix.length);
+                    // Renders brand in bold italic
+                    typedTextElement.innerHTML = `${prefix}<em class="italic font-bold">${typedBrand}</em>`;
                 }
             }
 
-            setTimeout(() => {
-                blank.style.opacity = '0';
-                landing.style.opacity = '1';
+            function typeNextChar() {
+                if (charIndex <= totalLen) {
+                    renderTypedText(charIndex);
+                    charIndex++;
+                    setTimeout(typeNextChar, 65); // Uniform typing speed
+                } else {
+                    // Step 3: Pause then untype smoothly
+                    setTimeout(untypeNextChar, 2200);
+                }
+            }
+
+            function untypeNextChar() {
+                if (charIndex >= 0) {
+                    renderTypedText(charIndex);
+                    charIndex--;
+                    setTimeout(untypeNextChar, 30); // Uniform backspace speed
+                } else {
+                    // Step 4: Transition to main page
+                    setTimeout(transitionToMain, 300);
+                }
+            }
+
+            function transitionToMain() {
+                landingView.style.opacity = '0';
 
                 setTimeout(() => {
-                    blank.style.display = 'none';
-                    setTimeout(typeWriter, 200);
-                }, 400);
+                    landingView.classList.add('hidden');
+                    blankView.classList.add('hidden');
 
-            }, 250);
+                    mainView.classList.remove('opacity-0', 'pointer-events-none');
+                    mainView.classList.add('opacity-100', 'pointer-events-auto');
+
+                    if (nodeCanvas) {
+                        nodeCanvas.style.opacity = '1';
+                    }
+                }, 800);
+            }
         });
     </script>
 </body>
