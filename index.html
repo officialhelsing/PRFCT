@@ -30,9 +30,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         html, body {
             height: 100%;
+            overflow: hidden;
             margin: 0;
             padding: 0;
             background-color: #FFFFFF;
@@ -42,7 +46,6 @@
             color: #2D2B28;
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
         .serif-title {
@@ -75,14 +78,14 @@
         }
 
         #node-canvas {
-            position: fixed;
+            position: absolute;
             top: -10vh;
             left: -10vw;
             width: 120vw;
             height: 120vh;
             pointer-events: none;
             z-index: 1;
-            opacity: 0.25;
+            opacity: 0;
             transition: opacity 2500ms ease-in-out;
         }
 
@@ -94,22 +97,20 @@
             justify-content: center;
         }
 
-        /* Hide scrollbar for clean minimal aesthetic */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        @media (max-width: 640px) {
+            .responsive-scaler {
+                transform: scale(0.9);
+                transform-origin: center;
+            }
         }
     </style>
 </head>
-<body class="h-full relative selection:bg-stone-200 selection:text-charcoal bg-white">
+<body class="h-full relative flex flex-col justify-between selection:bg-stone-200 selection:text-charcoal bg-white">
 
-    <div id="blank-view" class="fixed inset-0 z-30 flex items-center justify-center bg-white pointer-events-none"></div>
+    <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-white pointer-events-none"></div>
 
     <!-- Welcome / Typing view -->
-    <div id="landing-view" class="fixed inset-0 z-25 flex items-center justify-center bg-white opacity-0 pointer-events-none">
+    <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-white opacity-0 pointer-events-none">
         <div class="px-6 py-6 text-center select-none max-w-lg w-full flex flex-col items-center justify-center">
             <h2 class="serif-title text-charcoal text-[1.35rem] sm:text-[1.6rem] md:text-[1.85rem] font-light leading-[1.22] tracking-tight py-1 min-h-[3rem] flex items-center justify-center">
                 <span id="typed-text"></span><span id="typing-cursor" class="inline-block text-stone-800 font-mono ml-0.5 animate-pulse align-baseline">_</span>
@@ -117,29 +118,29 @@
         </div>
     </div>
 
-    <!-- Persistent high-DPI node network background canvas -->
-    <canvas id="node-canvas"></canvas>
+    <!-- Main content view -->
+    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-white overflow-hidden">
+        <canvas id="node-canvas"></canvas>
 
-    <!-- Main container with single initial overview section -->
-    <main id="main-view" class="relative z-10 w-full h-full overflow-y-auto no-scrollbar opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-transparent">
-        
-        <section class="w-full h-full min-h-screen flex items-center justify-center p-6 sm:p-8">
-            <div class="scale-container">
-                <div class="relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-6">
-                    <div class="relative w-full">
-                        <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
-                            <span class="font-sans font-normal not-italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
-                        </h1>
-                    </div>
-                    <div class="w-full flex justify-end items-center pt-2">
-                        <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 transition-colors duration-300 font-medium no-underline">
-                            ryan.global@proton.me |
-                        </a>
-                    </div>
+        <div class="scale-container">
+            <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-6">
+                
+                <div class="relative w-full">
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.98)_35%,rgba(255,255,255,0.85)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
+                    
+                    <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
+                        <span class="font-sans font-normal not-italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
+                    </h1>
                 </div>
-            </div>
-        </section>
 
+                <div class="w-full flex justify-end items-center pt-2">
+                    <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 transition-colors duration-300 font-medium no-underline">
+                        ryan.global@proton.me |
+                    </a>
+                </div>
+
+            </div>
+        </div>
     </main>
 
     <script>
@@ -186,10 +187,10 @@
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 }
 
-                draw() {
+                draw(alphaMultiplier) {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(110, 104, 95, 0.2)';
+                    ctx.fillStyle = `rgba(110, 104, 95, ${0.4 * alphaMultiplier})`;
                     ctx.fill();
                 }
             }
@@ -204,9 +205,30 @@
             function animate() {
                 ctx.clearRect(0, 0, width, height);
 
+                const scaler = document.querySelector('.responsive-scaler');
+                let textRect = null;
+                if (scaler) {
+                    const r = scaler.getBoundingClientRect();
+                    textRect = {
+                        left: r.left - 25,
+                        right: r.right + 25,
+                        top: r.top - 25,
+                        bottom: r.bottom + 25
+                    };
+                }
+
                 for (let i = 0; i < nodes.length; i++) {
+                    let alphaMult = 1.0;
+                    if (textRect) {
+                        const vpX = nodes[i].x - window.innerWidth * 0.1;
+                        const vpY = nodes[i].y - window.innerHeight * 0.1;
+                        if (vpX >= textRect.left && vpX <= textRect.right && vpY >= textRect.top && vpY <= textRect.bottom) {
+                            alphaMult = 0.15; // Low opacity behind text for pristine legibility
+                        }
+                    }
+
                     nodes[i].update();
-                    nodes[i].draw();
+                    nodes[i].draw(alphaMult);
 
                     for (let j = i + 1; j < nodes.length; j++) {
                         const dx = nodes[i].x - nodes[j].x;
@@ -214,10 +236,23 @@
                         const dist = Math.sqrt(dx * dx + dy * dy);
 
                         if (dist < 150) {
+                            let lineAlphaMult = 1.0;
+                            if (textRect) {
+                                const vpXi = nodes[i].x - window.innerWidth * 0.1;
+                                const vpYi = nodes[i].y - window.innerHeight * 0.1;
+                                const vpXj = nodes[j].x - window.innerWidth * 0.1;
+                                const vpYj = nodes[j].y - window.innerHeight * 0.1;
+                                const inI = (vpXi >= textRect.left && vpXi <= textRect.right && vpYi >= textRect.top && vpYi <= textRect.bottom);
+                                const inJ = (vpXj >= textRect.left && vpXj <= textRect.right && vpYj >= textRect.top && vpYj <= textRect.bottom);
+                                if (inI || inJ) {
+                                    lineAlphaMult = 0.15;
+                                }
+                            }
+
                             ctx.beginPath();
                             ctx.moveTo(nodes[i].x, nodes[i].y);
                             ctx.lineTo(nodes[j].x, nodes[j].y);
-                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.09 * (1 - dist / 150)})`;
+                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.18 * (1 - dist / 150) * lineAlphaMult})`;
                             ctx.lineWidth = 0.75;
                             ctx.stroke();
                         }
@@ -297,7 +332,7 @@
                     mainView.classList.add('opacity-100', 'pointer-events-auto');
 
                     if (nodeCanvas) {
-                        nodeCanvas.style.opacity = '0.35';
+                        nodeCanvas.style.opacity = '1';
                     }
                 }, 800);
             }
