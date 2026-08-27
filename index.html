@@ -102,10 +102,29 @@
             max-width: 38.45rem;
         }
 
-        /* Enforce full justification across desktop viewports */
+        /* Desktop Justification */
         .main-heading-text {
             text-align: justify;
             text-align-last: justify;
+        }
+
+        /* Mobile Pagination Container Styles */
+        .mobile-page {
+            display: none;
+        }
+        .mobile-page.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Desktop view default */
+        .desktop-view-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .mobile-pagination-wrapper {
+            display: none;
         }
 
         /* Responsive Mobile Adjustments */
@@ -114,33 +133,26 @@
                 overflow-y: auto;
             }
             .scale-container {
-                align-items: flex-start;
-                padding: 2rem 1.25rem;
+                align-items: center;
+                padding: 1.5rem 1.25rem;
             }
             .responsive-scaler {
                 max-width: 100%;
                 transform: none !important;
             }
-            .main-heading-text {
-                text-align: left;
-                text-align-last: left;
-                font-size: 1.05rem !important;
-                line-height: 1.5 !important;
+            .desktop-view-container {
+                display: none !important;
             }
-            .portrait-header-title {
-                font-size: 1.05rem !important;
-            }
-            .footer-container {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 0.85rem !important;
-                white-space: normal !important;
-            }
-            .footer-links-group {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 0.5rem !important;
+            .mobile-pagination-wrapper {
+                display: flex !important;
+                flex-direction: column;
                 width: 100%;
+            }
+            .mobile-heading-text {
+                text-align: justify;
+                text-align-last: left;
+                font-size: 1.1rem !important;
+                line-height: 1.6 !important;
             }
         }
     </style>
@@ -166,33 +178,97 @@
         <div class="scale-container">
             <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-6">
                 
-                <div class="relative w-full">
-                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
-                    
-                    <h1 class="serif-title main-heading-text text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default">
-                        <span class="font-sans font-normal not-italic text-charcoal portrait-header-title block mb-2 sm:inline sm:mb-0">&gt; Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring comprehensive tailored financial positioning, sophisticated hedging architecture, and quantitative risk models across global commodity markets
-                    </h1>
+                <!-- Desktop View Layout -->
+                <div class="desktop-view-container space-y-6">
+                    <div class="relative w-full">
+                        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
+                        
+                        <h1 class="serif-title main-heading-text text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default">
+                            <span class="font-sans font-normal not-italic text-charcoal block mb-2 sm:inline sm:mb-0">&gt; Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring comprehensive tailored financial positioning, sophisticated hedging architecture, and quantitative risk models across global commodity markets
+                        </h1>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="footer-container w-full flex justify-between items-center mt-6 pt-4 text-center whitespace-nowrap">
+                        <span class="font-sans text-[0.8rem] sm:text-[0.8rem] tracking-wide text-stone-500 font-normal">We look forward to hearing from you</span>
+                        
+                        <div class="footer-links-group flex items-center space-x-4">
+                            <div class="flex items-center space-x-1.5">
+                                <svg class="w-3.5 h-3.5 opacity-65 text-stone-500 inline-block" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                <a href="tel:+16093013076" onclick="copyPhone(event)" class="font-sans text-[0.8rem] sm:text-[0.8rem] tracking-wide text-stone-500 font-normal hover:text-charcoal transition-colors duration-300 relative">
+                                    +1 609 301 3076
+                                    <span id="copied-phone-notif" class="absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
+                                </a>
+                            </div>
+                            
+                            <div class="flex items-center space-x-1.5">
+                                <svg class="w-3.5 h-3.5 opacity-65 text-stone-500 inline-block" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event)" class="font-sans text-[0.8rem] sm:text-[0.8rem] tracking-wide text-stone-500 font-normal hover:text-charcoal transition-colors duration-300 relative">
+                                    ryan.global@proton.me
+                                    <span id="copied-notif" class="absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Footer -->
-                <div class="footer-container w-full flex justify-between items-center mt-6 pt-4 border-t border-stone-400/20 text-center whitespace-nowrap">
-                    <span class="font-sans text-[0.8rem] sm:text-[0.8rem] tracking-wide text-stone-500 font-normal">We look forward to hearing from you</span>
-                    
-                    <div class="footer-links-group flex items-center space-x-4">
-                        <div class="flex items-center space-x-1.5">
-                            <svg class="w-3.5 h-3.5 opacity-65 text-stone-500 inline-block" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                            <a href="tel:+16093013076" onclick="copyPhone(event)" class="font-sans text-[0.8rem] sm:text-[0.8rem] tracking-wide text-stone-500 font-normal hover:text-charcoal transition-colors duration-300 relative">
-                                +1 609 301 3076
-                                <span id="copied-phone-notif" class="absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
-                            </a>
+                <!-- Mobile Multi-Page Pagination View -->
+                <div class="mobile-pagination-wrapper relative w-full space-y-6">
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
+
+                    <!-- Mobile Page 1: Identity & Advisory Mandate -->
+                    <div id="mob-page-1" class="mobile-page active space-y-4 min-h-[160px] justify-between">
+                        <div class="space-y-3">
+                            <h2 class="font-sans font-normal text-charcoal text-[1.05rem] tracking-tight">
+                                &gt; Perpetual Reach Frontier Capital Trades
+                            </h2>
+                            <p class="serif-title mobile-heading-text text-charcoal text-[1.1rem] font-light tracking-tight">
+                                operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices.
+                            </p>
                         </div>
-                        
-                        <div class="flex items-center space-x-1.5">
-                            <svg class="w-3.5 h-3.5 opacity-65 text-stone-500 inline-block" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event)" class="font-sans text-[0.8rem] sm:text-[0.8rem] tracking-wide text-stone-500 font-normal hover:text-charcoal transition-colors duration-300 relative">
-                                ryan.global@proton.me
-                                <span id="copied-notif" class="absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
-                            </a>
+                        <div class="flex justify-between items-center pt-4 text-xs font-sans text-stone-500">
+                            <span>Page 1 of 3</span>
+                            <button onclick="changeMobilePage(2)" class="px-3 py-1 bg-stone-400/20 hover:bg-stone-400/30 rounded text-charcoal transition-colors">Next &rarr;</button>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Page 2: Architecture & Positioning -->
+                    <div id="mob-page-2" class="mobile-page space-y-4 min-h-[160px] justify-between">
+                        <div class="space-y-3">
+                            <span class="font-sans text-[0.7rem] uppercase tracking-wider text-stone-500">Advisory Framework</span>
+                            <p class="serif-title mobile-heading-text text-charcoal text-[1.1rem] font-light tracking-tight">
+                                structuring comprehensive tailored financial positioning, sophisticated hedging architecture, and quantitative risk models across global commodity markets.
+                            </p>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 text-xs font-sans text-stone-500">
+                            <button onclick="changeMobilePage(1)" class="px-3 py-1 bg-stone-400/20 hover:bg-stone-400/30 rounded text-charcoal transition-colors">&larr; Back</button>
+                            <span>Page 2 of 3</span>
+                            <button onclick="changeMobilePage(3)" class="px-3 py-1 bg-stone-400/20 hover:bg-stone-400/30 rounded text-charcoal transition-colors">Next &rarr;</button>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Page 3: Correspondence & Contact -->
+                    <div id="mob-page-3" class="mobile-page space-y-4 min-h-[160px] justify-between">
+                        <div class="space-y-3">
+                            <span class="font-sans text-[0.7rem] uppercase tracking-wider text-stone-500">Direct Correspondence</span>
+                            <p class="serif-title text-charcoal text-[1.1rem] font-light tracking-tight">
+                                We look forward to hearing from you.
+                            </p>
+                            <div class="flex flex-col space-y-2 pt-2">
+                                <a href="tel:+16093013076" onclick="copyPhone(event)" class="font-sans text-[0.9rem] text-stone-600 hover:text-charcoal flex items-center space-x-2">
+                                    <svg class="w-4 h-4 opacity-75" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                    <span>+1 609 301 3076</span>
+                                </a>
+                                <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event)" class="font-sans text-[0.9rem] text-stone-600 hover:text-charcoal flex items-center space-x-2">
+                                    <svg class="w-4 h-4 opacity-75" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                    <span>ryan.global@proton.me</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 text-xs font-sans text-stone-500">
+                            <button onclick="changeMobilePage(2)" class="px-3 py-1 bg-stone-400/20 hover:bg-stone-400/30 rounded text-charcoal transition-colors">&larr; Back</button>
+                            <span>Page 3 of 3</span>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -202,6 +278,14 @@
     </main>
 
     <script>
+        function changeMobilePage(pageNum) {
+            document.querySelectorAll('.mobile-page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('mob-page-' + pageNum);
+            if (target) {
+                target.classList.add('active');
+            }
+        }
+
         function updateScaling() {
             const scaler = document.querySelector('.responsive-scaler');
             if (!scaler) return;
