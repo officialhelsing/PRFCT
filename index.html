@@ -100,17 +100,15 @@
 
         .responsive-scaler {
             width: 100%;
-            max-width: 38.5rem;
+            max-width: 38.45rem;
             transform-origin: center;
             transition: transform 0.1s ease-out;
         }
 
-        /* Fully justified formatting forcing all lines to equal width */
-        .fully-justified {
+        /* Enforce full justification across all screen sizes */
+        .main-heading-text {
             text-align: justify;
             text-align-last: justify;
-            text-justify: inter-word;
-            width: 100%;
         }
 
         /* Default desktop/landscape bottom footer */
@@ -137,6 +135,7 @@
     <!-- Initial blank screen for smooth load -->
     <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-[#D6D1C6] pointer-events-none"></div>
 
+    <!-- Typing animation introductory screen -->
     <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-[#D6D1C6] opacity-0 pointer-events-none">
         <div class="px-6 py-6 text-center select-none max-w-lg w-full flex flex-col items-center justify-center">
             <h2 class="serif-title text-charcoal text-[1.35rem] sm:text-[1.6rem] md:text-[1.85rem] font-light leading-[1.22] tracking-tight py-1 min-h-[3rem] flex items-center justify-center">
@@ -145,25 +144,19 @@
         </div>
     </div>
 
-    <!-- Main view with topographic contour canvas and unified text block -->
+    <!-- Main view with topographic contour canvas and body text block -->
     <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-4 sm:p-8 opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-transparent overflow-hidden">
         <canvas id="contour-canvas"></canvas>
 
         <div class="scale-container">
-            <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.5rem] shrink-0 p-4 sm:p-6 space-y-4">
+            <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-4">
                 
-                <div class="relative w-full space-y-3.5">
+                <div class="relative w-full">
                     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                     
-                    <!-- Top title line with equal-width justification and upright full name -->
-                    <div class="font-sans font-normal text-charcoal text-[1.05rem] sm:text-[1.2rem] md:text-[1.28rem] tracking-tight fully-justified">
-                        PRFCT (Perpetual Reach Frontier Capital Trades)
-                    </div>
-
-                    <!-- Descriptive paragraph with equal-width justification -->
-                    <div class="serif-title text-charcoal text-[1.08rem] sm:text-[1.22rem] md:text-[1.32rem] font-light leading-[1.38] tracking-tight cursor-default fully-justified">
-                        operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring comprehensive tailored financial positioning, sophisticated hedging architecture, and quantitative risk models across global commodity markets, execution venues, and cross-border settlement frameworks.
-                    </div>
+                    <h1 class="serif-title main-heading-text text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default">
+                        <span class="font-sans font-normal not-italic text-charcoal">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring comprehensive tailored financial positioning, sophisticated hedging architecture, and quantitative risk models across global commodity markets
+                    </h1>
                 </div>
 
                 <!-- Desktop / Landscape Footer -->
@@ -181,7 +174,7 @@
                     </a>
                 </div>
 
-                <!-- Portrait Mobile Footer -->
+                <!-- Portrait Mobile Footer (Phone on Left, Email on Right, notifications omitted) -->
                 <div class="portrait-footer w-full items-center justify-between mt-6 pt-3 border-t border-stone-400/20">
                     <div class="flex items-center space-x-1.5">
                         <svg class="w-3.5 h-3.5 opacity-65 text-stone-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
