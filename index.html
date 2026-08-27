@@ -95,32 +95,14 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            padding: 1rem;
         }
 
         .responsive-scaler {
             width: 100%;
             max-width: 38.45rem;
-            transition: transform 0.3s ease;
-        }
-
-        /* Uniform proportional scaling for mobile viewports without reflow */
-        @media (max-width: 680px) {
-            .responsive-scaler {
-                transform: scale(0.78);
-                transform-origin: center;
-            }
-        }
-        @media (max-width: 480px) {
-            .responsive-scaler {
-                transform: scale(0.68);
-                transform-origin: center;
-            }
-        }
-        @media (max-width: 380px) {
-            .responsive-scaler {
-                transform: scale(0.58);
-                transform-origin: center;
-            }
+            transform-origin: center;
+            transition: transform 0.1s ease-out;
         }
     </style>
 </head>
@@ -139,7 +121,7 @@
     </div>
 
     <!-- Main view with topographic contour canvas and justified text block -->
-    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-transparent overflow-hidden">
+    <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-4 sm:p-8 opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-transparent overflow-hidden">
         <canvas id="contour-canvas"></canvas>
 
         <div class="scale-container">
@@ -173,6 +155,21 @@
     </main>
 
     <script>
+        function updateScaling() {
+            const scaler = document.querySelector('.responsive-scaler');
+            if (!scaler) return;
+            const windowWidth = window.innerWidth;
+            const targetWidth = 630; // base width in px for 38.45rem
+            if (windowWidth < targetWidth + 32) {
+                const scale = (windowWidth - 32) / targetWidth;
+                scaler.style.transform = `scale(${Math.max(0.42, scale)})`;
+            } else {
+                scaler.style.transform = 'scale(1)';
+            }
+        }
+
+        window.addEventListener('resize', updateScaling);
+
         function copyEmail(e) {
             e.preventDefault();
             const email = "ryan.global@proton.me";
@@ -286,14 +283,17 @@
 
             window.addEventListener('resize', () => {
                 resize();
+                updateScaling();
             });
 
             resize();
+            updateScaling();
             animate();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             initContourCanvas();
+            updateScaling();
 
             const blankView = document.getElementById('blank-view');
             const landingView = document.getElementById('landing-view');
