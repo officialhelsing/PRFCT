@@ -129,7 +129,7 @@
                     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                     
                     <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
-                        <span class="font-sans font-normal not-italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk 
+                        <span class="font-sans font-normal italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk 
                         
                         <!-- Desktop inline email positioned in whitespace gap with absolute-positioned zero-width copied notification -->
                         <span class="hidden md:inline-block relative align-baseline mx-1">
@@ -192,9 +192,9 @@
             let nodes = [];
             
             const isDesktop = window.innerWidth >= 768;
-            // Optimized node density: slightly lighter/less prevalent for desktop, balanced for mobile
-            const nodeCount = isDesktop ? 460 : 120; 
-            const connectionDistance = isDesktop ? 170 : 110;
+            // Optimized subtle node density for desktop
+            const nodeCount = isDesktop ? 360 : 120; 
+            const connectionDistance = isDesktop ? 150 : 110;
             const dpr = window.devicePixelRatio || 1;
 
             function resize() {
@@ -218,10 +218,10 @@
                 constructor() {
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.45;
-                    this.vy = (Math.random() - 0.5) * 0.45;
-                    this.radius = Math.random() * (isDesktop ? 1.8 : 1.4) + 0.4;
-                    this.baseAlpha = Math.random() * 0.85 + 0.15;
+                    this.vx = (Math.random() - 0.5) * 0.4;
+                    this.vy = (Math.random() - 0.5) * 0.4;
+                    this.radius = Math.random() * (isDesktop ? 1.6 : 1.4) + 0.4;
+                    this.baseAlpha = Math.random() * 0.75 + 0.15;
                 }
 
                 update() {
@@ -298,8 +298,8 @@
                             ctx.moveTo(nodes[i].x, nodes[i].y);
                             ctx.lineTo(nodes[j].x, nodes[j].y);
                             const avgAlpha = (nodes[i].baseAlpha + nodes[j].baseAlpha) * 0.5;
-                            ctx.strokeStyle = `rgba(75, 70, 63, ${avgAlpha * 0.32 * (1 - dist / connectionDistance) * lineAlphaMult})`;
-                            ctx.lineWidth = isDesktop ? 0.7 : 0.6;
+                            ctx.strokeStyle = `rgba(75, 70, 63, ${avgAlpha * 0.26 * (1 - dist / connectionDistance) * lineAlphaMult})`;
+                            ctx.lineWidth = isDesktop ? 0.6 : 0.5;
                             ctx.stroke();
                         }
                     }
