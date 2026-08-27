@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRFCT</title>
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -108,7 +107,6 @@
 </head>
 <body class="h-full relative flex flex-col justify-between selection:bg-stone-200 selection:text-charcoal bg-white">
 
-    <!-- Initial blank screen transition -->
     <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-white pointer-events-none"></div>
 
     <!-- Welcome / Typing view -->
@@ -127,18 +125,15 @@
         <div class="scale-container">
             <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-6">
                 
-                <!-- Main body paragraph (Justified) -->
                 <div class="relative w-full">
-                    <!-- Subtle radial mask behind text -->
                     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_35%,rgba(255,255,255,0.75)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                     
-                    <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default text-justify">
+                    <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
                         <span class="font-sans font-normal not-italic text-stone-600">Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
                     </h1>
                 </div>
 
-                <!-- Contact section (Left Aligned) -->
-                <div class="w-full flex justify-start items-center pt-2">
+                <div class="w-full flex justify-end items-center pt-2">
                     <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 underline underline-offset-4 decoration-stone-300 transition-colors duration-300 font-medium">
                         &gt; ryan.global@proton.me
                     </a>
@@ -256,12 +251,9 @@
             const totalLen = prefix.length + brand.length;
             let charIndex = 0;
 
-            // Step 1: Initial fade in of landing screen
             setTimeout(() => {
                 blankView.style.opacity = '0';
                 landingView.style.opacity = '1';
-
-                // Step 2: Smooth uniform typing
                 setTimeout(typeNextChar, 500);
             }, 300);
 
@@ -270,7 +262,6 @@
                     typedTextElement.textContent = prefix.substring(0, index);
                 } else {
                     const typedBrand = brand.substring(0, index - prefix.length);
-                    // Renders brand in normal sans font matching the email without bold or italic
                     typedTextElement.innerHTML = `${prefix}<span class="font-sans font-normal not-italic">${typedBrand}</span>`;
                 }
             }
@@ -279,9 +270,8 @@
                 if (charIndex <= totalLen) {
                     renderTypedText(charIndex);
                     charIndex++;
-                    setTimeout(typeNextChar, 65); // Uniform typing speed
+                    setTimeout(typeNextChar, 65);
                 } else {
-                    // Step 3: Pause then untype smoothly
                     setTimeout(untypeNextChar, 2200);
                 }
             }
@@ -290,9 +280,8 @@
                 if (charIndex >= 0) {
                     renderTypedText(charIndex);
                     charIndex--;
-                    setTimeout(untypeNextChar, 30); // Uniform backspace speed
+                    setTimeout(untypeNextChar, 30);
                 } else {
-                    // Step 4: Transition to main page
                     setTimeout(transitionToMain, 300);
                 }
             }
