@@ -119,7 +119,7 @@
             display: none;
         }
 
-        /* Portrait mode mobile viewports styling: scaled down gracefully to alleviate compaction */
+        /* Portrait mode mobile viewports styling: scaled down by an additional 30% */
         @media (max-width: 768px) and (orientation: portrait) {
             .desktop-footer {
                 display: none !important;
@@ -128,18 +128,18 @@
                 display: flex !important;
             }
             .responsive-scaler {
-                max-width: 31rem;
-                padding: 0.75rem;
+                max-width: 26rem;
+                padding: 0.5rem;
             }
             .main-heading-text {
-                font-size: 1rem !important;
-                line-height: 1.45 !important;
+                font-size: 0.7rem !important;
+                line-height: 1.35 !important;
             }
             .portrait-header-title {
-                font-size: 0.95rem !important;
+                font-size: 0.66rem !important;
             }
             .portrait-footer a, .portrait-footer span {
-                font-size: 0.68rem !important;
+                font-size: 0.48rem !important;
             }
         }
     </style>
