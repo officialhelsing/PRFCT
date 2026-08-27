@@ -76,12 +76,12 @@
             animation: pageEntranceFade 2500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        #node-canvas {
+        #contour-canvas {
             position: absolute;
-            top: -30vh;
-            left: -30vw;
-            width: 160vw;
-            height: 160vh;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 1;
             opacity: 0;
@@ -118,9 +118,9 @@
         </div>
     </div>
 
-    <!-- Main view with node canvas and justified text block -->
+    <!-- Main view with topographic contour canvas and justified text block -->
     <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-transparent overflow-hidden">
-        <canvas id="node-canvas"></canvas>
+        <canvas id="contour-canvas"></canvas>
 
         <div class="scale-container">
             <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-6">
@@ -134,7 +134,7 @@
                         <!-- Desktop inline email positioned in whitespace gap with absolute-positioned zero-width copied notification -->
                         <span class="hidden md:inline-block relative align-baseline mx-1">
                             <span id="copied-notif-desktop" class="absolute right-full top-1/2 -translate-y-1/2 mr-1.5 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
-                            <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'desktop')" class="font-sans text-[0.78rem] sm:text-[0.82rem] tracking-wide text-stone-600 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline italic">ryan.global@proton.me &lt;</a>
+                            <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'desktop')" class="font-sans text-[0.78rem] sm:text-[0.82rem] tracking-wide text-stone-600 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline not-italic">ryan.global@proton.me &lt;</a>
                         </span>
                         
                         models across global commodity markets.
@@ -145,7 +145,7 @@
                 <div class="w-full flex justify-end items-center pt-2 md:hidden">
                     <span class="relative inline-block align-baseline mr-1">
                         <span id="copied-notif-mobile" class="absolute right-full top-1/2 -translate-y-1/2 mr-2 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
-                        <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'mobile')" class="font-sans text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-600 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline italic">
+                        <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'mobile')" class="font-sans text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-600 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline not-italic">
                             ryan.global@proton.me &lt;
                         </a>
                     </span>
@@ -183,125 +183,60 @@
             }
         }
 
-        function initNodeCanvas() {
-            const canvas = document.getElementById('node-canvas');
+        function initContourCanvas() {
+            const canvas = document.getElementById('contour-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             
             let width, height;
-            let nodes = [];
-            
-            const isDesktop = window.innerWidth >= 768;
-            const nodeCount = isDesktop ? 460 : 120; 
-            const connectionDistance = isDesktop ? 170 : 110;
+            let time = 0;
             const dpr = window.devicePixelRatio || 1;
 
             function resize() {
-                const scaleFactor = 1.6;
-                const displayWidth = window.innerWidth * scaleFactor;
-                const displayHeight = window.innerHeight * scaleFactor;
+                width = window.innerWidth;
+                height = window.innerHeight;
                 
-                canvas.width = displayWidth * dpr;
-                canvas.height = displayHeight * dpr;
-                
-                canvas.style.width = displayWidth + 'px';
-                canvas.style.height = displayHeight + 'px';
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
                 
                 ctx.setTransform(1, 0, 0, 1, 0, 0);
                 ctx.scale(dpr, dpr);
-                width = displayWidth;
-                height = displayHeight;
-            }
-
-            class Node {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.45;
-                    this.vy = (Math.random() - 0.5) * 0.45;
-                    this.radius = Math.random() * (isDesktop ? 1.8 : 1.4) + 0.4;
-                    this.baseAlpha = Math.random() * 0.85 + 0.15;
-                }
-
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-
-                draw(alphaMultiplier) {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(75, 70, 63, ${this.baseAlpha * alphaMultiplier})`;
-                    ctx.fill();
-                }
-            }
-
-            function setupNodes() {
-                nodes = [];
-                for (let i = 0; i < nodeCount; i++) {
-                    nodes.push(new Node());
-                }
             }
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
+                time += 0.003;
 
-                const scaler = document.querySelector('.responsive-scaler');
-                let textRect = null;
-                if (scaler) {
-                    const r = scaler.getBoundingClientRect();
-                    textRect = {
-                        left: r.left - 40,
-                        right: r.right + 40,
-                        top: r.top - 40,
-                        bottom: r.bottom + 40
-                    };
-                }
+                const numLines = 16;
+                const stepY = height / (numLines + 1);
 
-                for (let i = 0; i < nodes.length; i++) {
-                    let alphaMult = 1.0;
-                    if (textRect) {
-                        const vpX = nodes[i].x - window.innerWidth * 0.3;
-                        const vpY = nodes[i].y - window.innerHeight * 0.3;
-                        if (vpX >= textRect.left && vpX <= textRect.right && vpY >= textRect.top && vpY <= textRect.bottom) {
-                            alphaMult = 0.12;
+                for (let i = 1; i <= numLines; i++) {
+                    const baseY = stepY * i;
+                    ctx.beginPath();
+                    
+                    for (let x = 0; x <= width; x += 15) {
+                        const freq1 = 0.002;
+                        const freq2 = 0.005;
+                        const amplitude = 35 + (i * 2.5);
+                        
+                        const yOffset = Math.sin(x * freq1 + time + i * 0.4) * amplitude +
+                                        Math.cos(x * freq2 - time * 0.7) * (amplitude * 0.4);
+                        
+                        const currentY = baseY + yOffset;
+
+                        if (x === 0) {
+                            ctx.moveTo(x, currentY);
+                        } else {
+                            ctx.lineTo(x, currentY);
                         }
                     }
 
-                    nodes[i].update();
-                    nodes[i].draw(alphaMult);
-
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        const dx = nodes[i].x - nodes[j].x;
-                        const dy = nodes[i].y - nodes[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-
-                        if (dist < connectionDistance) {
-                            let lineAlphaMult = 1.0;
-                            if (textRect) {
-                                const vpXi = nodes[i].x - window.innerWidth * 0.3;
-                                const vpYi = nodes[i].y - window.innerHeight * 0.3;
-                                const vpXj = nodes[j].x - window.innerWidth * 0.3;
-                                const vpYj = nodes[j].y - window.innerHeight * 0.3;
-                                const inI = (vpXi >= textRect.left && vpXi <= textRect.right && vpYi >= textRect.top && vpYi <= textRect.bottom);
-                                const inJ = (vpXj >= textRect.left && vpXj <= textRect.right && vpYj >= textRect.top && vpYj <= textRect.bottom);
-                                if (inI || inJ) {
-                                    lineAlphaMult = 0.12;
-                                }
-                            }
-
-                            ctx.beginPath();
-                            ctx.moveTo(nodes[i].x, nodes[i].y);
-                            ctx.lineTo(nodes[j].x, nodes[j].y);
-                            const avgAlpha = (nodes[i].baseAlpha + nodes[j].baseAlpha) * 0.5;
-                            ctx.strokeStyle = `rgba(75, 70, 63, ${avgAlpha * 0.32 * (1 - dist / connectionDistance) * lineAlphaMult})`;
-                            ctx.lineWidth = isDesktop ? 0.7 : 0.6;
-                            ctx.stroke();
-                        }
-                    }
+                    const alpha = 0.08 + (Math.sin(time + i) * 0.03);
+                    ctx.strokeStyle = `rgba(75, 70, 63, ${Math.max(0.04, alpha)})`;
+                    ctx.lineWidth = 1.0;
+                    ctx.stroke();
                 }
 
                 requestAnimationFrame(animate);
@@ -309,22 +244,20 @@
 
             window.addEventListener('resize', () => {
                 resize();
-                setupNodes();
             });
 
             resize();
-            setupNodes();
             animate();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            initNodeCanvas();
+            initContourCanvas();
 
             const blankView = document.getElementById('blank-view');
             const landingView = document.getElementById('landing-view');
             const mainView = document.getElementById('main-view');
             const typedTextElement = document.getElementById('typed-text');
-            const nodeCanvas = document.getElementById('node-canvas');
+            const contourCanvas = document.getElementById('contour-canvas');
 
             const prefix = "Welcome to ";
             const brand = "PRFCT";
@@ -376,8 +309,8 @@
                     mainView.classList.remove('opacity-0', 'pointer-events-none');
                     mainView.classList.add('opacity-100', 'pointer-events-auto');
 
-                    if (nodeCanvas) {
-                        nodeCanvas.style.opacity = '1';
+                    if (contourCanvas) {
+                        contourCanvas.style.opacity = '1';
                     }
                 }, 800);
             }
