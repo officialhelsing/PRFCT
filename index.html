@@ -129,22 +129,24 @@
                     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                     
                     <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
-                        <span class="font-sans font-normal text-charcoal">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk 
+                        <span class="font-sans font-normal not-italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk 
                         
-                        <span class="inline-block relative align-baseline">
+                        <!-- Desktop inline email positioned in whitespace gap with absolute-positioned zero-width copied notification -->
+                        <span class="hidden md:inline-block relative align-baseline mx-1">
                             <span id="copied-notif-desktop" class="absolute right-full top-1/2 -translate-y-1/2 mr-1.5 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
-                            <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'desktop')" class="font-sans text-[0.78rem] sm:text-[0.82rem] tracking-wide text-stone-600 hover:text-stone-800 transition-colors duration-300 font-normal no-underline align-baseline"> ryan.global@proton.me |</a>
+                            <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'desktop')" class="font-sans text-[0.78rem] sm:text-[0.82rem] tracking-wide text-stone-600 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline italic">ryan.global@proton.me &lt;</a>
                         </span>
                         
                         models across global commodity markets.
                     </h1>
                 </div>
 
+                <!-- Mobile email view with copied notification positioned immediately to the left -->
                 <div class="w-full flex justify-end items-center pt-2 md:hidden">
                     <span class="relative inline-block align-baseline mr-1">
                         <span id="copied-notif-mobile" class="absolute right-full top-1/2 -translate-y-1/2 mr-2 font-sans text-[0.55rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
-                        <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'mobile')" class="font-sans text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-600 hover:text-stone-800 transition-colors duration-300 font-normal no-underline align-baseline">
-                            ryan.global@proton.me |
+                        <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'mobile')" class="font-sans text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-600 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline italic">
+                            ryan.global@proton.me &lt;
                         </a>
                     </span>
                 </div>
@@ -190,9 +192,9 @@
             let nodes = [];
             
             const isDesktop = window.innerWidth >= 768;
-            // Less prevalent node density for desktop
-            const nodeCount = isDesktop ? 260 : 120; 
-            const connectionDistance = isDesktop ? 135 : 110;
+            // Optimized node density: slightly lighter/less prevalent for desktop, balanced for mobile
+            const nodeCount = isDesktop ? 460 : 120; 
+            const connectionDistance = isDesktop ? 170 : 110;
             const dpr = window.devicePixelRatio || 1;
 
             function resize() {
@@ -216,10 +218,10 @@
                 constructor() {
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.4;
-                    this.vy = (Math.random() - 0.5) * 0.4;
-                    this.radius = Math.random() * (isDesktop ? 1.6 : 1.4) + 0.4;
-                    this.baseAlpha = Math.random() * 0.75 + 0.15;
+                    this.vx = (Math.random() - 0.5) * 0.45;
+                    this.vy = (Math.random() - 0.5) * 0.45;
+                    this.radius = Math.random() * (isDesktop ? 1.8 : 1.4) + 0.4;
+                    this.baseAlpha = Math.random() * 0.85 + 0.15;
                 }
 
                 update() {
@@ -296,8 +298,8 @@
                             ctx.moveTo(nodes[i].x, nodes[i].y);
                             ctx.lineTo(nodes[j].x, nodes[j].y);
                             const avgAlpha = (nodes[i].baseAlpha + nodes[j].baseAlpha) * 0.5;
-                            ctx.strokeStyle = `rgba(75, 70, 63, ${avgAlpha * 0.20 * (1 - dist / connectionDistance) * lineAlphaMult})`;
-                            ctx.lineWidth = isDesktop ? 0.5 : 0.5;
+                            ctx.strokeStyle = `rgba(75, 70, 63, ${avgAlpha * 0.32 * (1 - dist / connectionDistance) * lineAlphaMult})`;
+                            ctx.lineWidth = isDesktop ? 0.7 : 0.6;
                             ctx.stroke();
                         }
                     }
