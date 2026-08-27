@@ -133,7 +133,7 @@
                     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_35%,rgba(255,255,255,0.75)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                     
                     <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default text-justify">
-                        <span class="italic font-normal text-stone-500">Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
+                        <span class="font-sans font-normal not-italic text-stone-600">Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
                     </h1>
                 </div>
 
@@ -259,8 +259,8 @@
                     typedTextElement.textContent = prefix.substring(0, index);
                 } else {
                     const typedBrand = brand.substring(0, index - prefix.length);
-                    // Renders brand in bold italic
-                    typedTextElement.innerHTML = `${prefix}<em class="italic font-bold">${typedBrand}</em>`;
+                    // Renders brand in normal sans font matching the email without bold or italic
+                    typedTextElement.innerHTML = `${prefix}<span class="font-sans font-normal not-italic">${typedBrand}</span>`;
                 }
             }
 
