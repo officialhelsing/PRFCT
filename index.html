@@ -129,13 +129,13 @@
                     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_35%,rgba(255,255,255,0.75)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                     
                     <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
-                        <span class="font-sans font-normal not-italic text-stone-600">Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
+                        <span class="font-sans font-normal not-italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
                     </h1>
                 </div>
 
                 <div class="w-full flex justify-end items-center pt-2">
-                    <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 transition-colors duration-300 font-medium">
-                        &gt; ryan.global@proton.me
+                    <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 transition-colors duration-300 font-medium no-underline">
+                        ryan.global@proton.me |
                     </a>
                 </div>
 
@@ -164,6 +164,7 @@
                 canvas.style.width = displayWidth + 'px';
                 canvas.style.height = displayHeight + 'px';
                 
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
                 ctx.scale(dpr, dpr);
                 width = displayWidth;
                 height = displayHeight;
@@ -189,7 +190,7 @@
                 draw() {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(110, 104, 95, 0.35)';
+                    ctx.fillStyle = 'rgba(110, 104, 95, 0.4)';
                     ctx.fill();
                 }
             }
@@ -217,8 +218,8 @@
                             ctx.beginPath();
                             ctx.moveTo(nodes[i].x, nodes[i].y);
                             ctx.lineTo(nodes[j].x, nodes[j].y);
-                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.16 * (1 - dist / 150)})`;
-                            ctx.lineWidth = 0.5;
+                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.18 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.75;
                             ctx.stroke();
                         }
                     }
