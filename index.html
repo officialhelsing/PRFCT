@@ -141,12 +141,14 @@
                     </h1>
                 </div>
 
-                <!-- Mobile email view with copied notification -->
-                <div class="w-full flex justify-end items-center pt-2 md:hidden relative">
-                    <span id="copied-notif-mobile" class="absolute right-[calc(100%-1rem)] font-sans text-[0.65rem] tracking-wide text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none mr-2">copied</span>
-                    <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'mobile')" class="font-sans text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-700 hover:text-stone-900 transition-colors duration-300 font-normal no-underline">
-                        ryan.global@proton.me |
-                    </a>
+                <!-- Mobile email view with copied notification positioned immediately to the left -->
+                <div class="w-full flex justify-end items-center pt-2 md:hidden">
+                    <span class="relative inline-block align-baseline mr-1">
+                        <span id="copied-notif-mobile" class="absolute right-full top-1/2 -translate-y-1/2 mr-2 font-sans text-[0.6rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
+                        <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'mobile')" class="font-sans text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-700 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline">
+                            ryan.global@proton.me |
+                        </a>
+                    </span>
                 </div>
 
             </div>
