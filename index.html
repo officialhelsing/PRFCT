@@ -137,10 +137,10 @@
                     </h1>
                 </div>
 
-                <!-- Contact section (Right Aligned) -->
-                <div class="w-full flex justify-end items-center pt-2">
+                <!-- Contact section (Left Aligned) -->
+                <div class="w-full flex justify-start items-center pt-2">
                     <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 underline underline-offset-4 decoration-stone-300 transition-colors duration-300 font-medium">
-                        ryan.global@proton.me
+                        &gt; ryan.global@proton.me
                     </a>
                 </div>
 
@@ -156,11 +156,22 @@
             
             let width, height;
             let nodes = [];
-            const nodeCount = 35;
+            const nodeCount = 40;
+            const dpr = window.devicePixelRatio || 1;
 
             function resize() {
-                width = canvas.width = window.innerWidth * 1.2;
-                height = canvas.height = window.innerHeight * 1.2;
+                const displayWidth = window.innerWidth * 1.2;
+                const displayHeight = window.innerHeight * 1.2;
+                
+                canvas.width = displayWidth * dpr;
+                canvas.height = displayHeight * dpr;
+                
+                canvas.style.width = displayWidth + 'px';
+                canvas.style.height = displayHeight + 'px';
+                
+                ctx.scale(dpr, dpr);
+                width = displayWidth;
+                height = displayHeight;
             }
 
             class Node {
@@ -169,7 +180,7 @@
                     this.y = Math.random() * height;
                     this.vx = (Math.random() - 0.5) * 0.25;
                     this.vy = (Math.random() - 0.5) * 0.25;
-                    this.radius = Math.random() * 1.5 + 1;
+                    this.radius = Math.random() * 1.2 + 0.8;
                 }
 
                 update() {
@@ -183,7 +194,7 @@
                 draw() {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(110, 104, 95, 0.25)';
+                    ctx.fillStyle = 'rgba(110, 104, 95, 0.35)';
                     ctx.fill();
                 }
             }
@@ -207,12 +218,12 @@
                         const dy = nodes[i].y - nodes[j].y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
 
-                        if (dist < 140) {
+                        if (dist < 150) {
                             ctx.beginPath();
                             ctx.moveTo(nodes[i].x, nodes[i].y);
                             ctx.lineTo(nodes[j].x, nodes[j].y);
-                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.12 * (1 - dist / 140)})`;
-                            ctx.lineWidth = 0.6;
+                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.16 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.5;
                             ctx.stroke();
                         }
                     }
