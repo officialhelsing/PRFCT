@@ -37,10 +37,10 @@
             overflow: hidden;
             margin: 0;
             padding: 0;
-            background-color: #E8E3DA;
+            background-color: #EFECE6;
             background-image: 
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.65) 0%, rgba(0,0,0,0.1) 100%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.42   0 0 0 0 0.40   0 0 0 0 0.36  0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.7) 0%, rgba(200,195,185,0.35) 100%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.38   0 0 0 0 0.36   0 0 0 0 0.32  0 0 0 0.42 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
         }
 
         body {
@@ -80,10 +80,10 @@
 
         #node-canvas {
             position: absolute;
-            top: -30vh;
-            left: -30vw;
-            width: 160vw;
-            height: 160vh;
+            top: -60vh;
+            left: -60vw;
+            width: 220vw;
+            height: 220vh;
             pointer-events: none;
             z-index: 1;
             opacity: 0;
@@ -126,8 +126,6 @@
             <div class="responsive-scaler relative z-10 flex flex-col items-start justify-center my-auto animate-entrance w-full max-w-[38.45rem] shrink-0 p-4 sm:p-6 space-y-6">
                 
                 <div class="relative w-full">
-                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(239,236,230,0.95)_40%,rgba(239,236,230,0.7)_70%,transparent_100%)] blur-lg -z-10 pointer-events-none"></div>
-                    
                     <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
                         <span class="font-sans font-normal not-italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk models across global commodity markets.
                     </h1>
@@ -151,12 +149,12 @@
             
             let width, height;
             let nodes = [];
-            const nodeCount = 155; // High density for a dense infinite lattice field
+            const nodeCount = 320; // High density floating node field
             const dpr = window.devicePixelRatio || 1;
 
             function resize() {
-                const displayWidth = window.innerWidth * 1.6;
-                const displayHeight = window.innerHeight * 1.6;
+                const displayWidth = window.innerWidth * 2.2;
+                const displayHeight = window.innerHeight * 2.2;
                 
                 canvas.width = displayWidth * dpr;
                 canvas.height = displayHeight * dpr;
@@ -174,23 +172,27 @@
                 constructor() {
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.12;
-                    this.vy = (Math.random() - 0.5) * 0.12;
-                    this.radius = Math.random() * 1.1 + 0.5;
+                    // Active floating movement across screen
+                    this.vx = (Math.random() - 0.4) * 0.45 + 0.12;
+                    this.vy = (Math.random() - 0.5) * 0.35;
+                    this.radius = Math.random() * 1.3 + 0.6;
                 }
 
                 update() {
                     this.x += this.vx;
                     this.y += this.vy;
 
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                    // Infinite wrap-around bounds far off-screen
+                    if (this.x < -100) this.x = width + 100;
+                    if (this.x > width + 100) this.x = -100;
+                    if (this.y < -100) this.y = height + 100;
+                    if (this.y > height + 100) this.y = -100;
                 }
 
                 draw(alphaMultiplier) {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(110, 104, 95, ${0.5 * alphaMultiplier})`;
+                    ctx.fillStyle = `rgba(110, 104, 95, ${0.6 * alphaMultiplier})`;
                     ctx.fill();
                 }
             }
@@ -210,10 +212,10 @@
                 if (scaler) {
                     const r = scaler.getBoundingClientRect();
                     textRect = {
-                        left: r.left - 40,
-                        right: r.right + 40,
-                        top: r.top - 40,
-                        bottom: r.bottom + 40
+                        left: r.left - 50,
+                        right: r.right + 50,
+                        top: r.top - 50,
+                        bottom: r.bottom + 50
                     };
                 }
 
@@ -222,44 +224,29 @@
                     nodes[i].update();
                 }
 
-                // Draw structured crystalline lattice connections
+                // Densely interconnected web connecting nodes within range
                 for (let i = 0; i < nodes.length; i++) {
-                    let neighbors = [];
-                    for (let j = 0; j < nodes.length; j++) {
-                        if (i === j) continue;
+                    for (let j = i + 1; j < nodes.length; j++) {
                         const dx = nodes[i].x - nodes[j].x;
                         const dy = nodes[i].y - nodes[j].y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 125) {
-                            neighbors.push({ node: nodes[j], dist: dist });
-                        }
-                    }
-                    // Sort by distance to enforce geometric nearest-neighbor lattice ties
-                    neighbors.sort((a, b) => a.dist - b.dist);
-                    
-                    const connectCount = Math.min(3, neighbors.length);
-                    for (let k = 0; k < connectCount; k++) {
-                        const neighbor = neighbors[k];
                         
-                        let lineAlphaMult = 1.0;
-                        if (textRect) {
-                            const vpXi = nodes[i].x - window.innerWidth * 0.3;
-                            const vpYi = nodes[i].y - window.innerHeight * 0.3;
-                            const vpXj = neighbor.node.x - window.innerWidth * 0.3;
-                            const vpYj = neighbor.node.y - window.innerHeight * 0.3;
-                            const inI = (vpXi >= textRect.left && vpXi <= textRect.right && vpYi >= textRect.top && vpYi <= textRect.bottom);
-                            const inJ = (vpXj >= textRect.left && vpXj <= textRect.right && vpYj >= textRect.top && vpYj <= textRect.bottom);
-                            if (inI || inJ) {
-                                lineAlphaMult = 0.12;
+                        if (dist < 145) {
+                            let lineAlphaMult = 1.0;
+                            if (textRect) {
+                                const vpXi = nodes[i].x - window.innerWidth * 0.6;
+                                const vpYi = nodes[i].y - window.innerHeight * 0.6;
+                                const inI = (vpXi >= textRect.left && vpXi <= textRect.right && vpYi >= textRect.top && vpYi <= textRect.bottom);
+                                if (inI) lineAlphaMult = 0.08;
                             }
-                        }
 
-                        ctx.beginPath();
-                        ctx.moveTo(nodes[i].x, nodes[i].y);
-                        ctx.lineTo(neighbor.node.x, neighbor.node.y);
-                        ctx.strokeStyle = `rgba(110, 104, 95, ${0.28 * (1 - neighbor.dist / 125) * lineAlphaMult})`;
-                        ctx.lineWidth = 0.75;
-                        ctx.stroke();
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = `rgba(110, 104, 95, ${0.2 * (1 - dist / 145) * lineAlphaMult})`;
+                            ctx.lineWidth = 0.55;
+                            ctx.stroke();
+                        }
                     }
                 }
 
@@ -267,10 +254,10 @@
                 for (let i = 0; i < nodes.length; i++) {
                     let alphaMult = 1.0;
                     if (textRect) {
-                        const vpX = nodes[i].x - window.innerWidth * 0.3;
-                        const vpY = nodes[i].y - window.innerHeight * 0.3;
+                        const vpX = nodes[i].x - window.innerWidth * 0.6;
+                        const vpY = nodes[i].y - window.innerHeight * 0.6;
                         if (vpX >= textRect.left && vpX <= textRect.right && vpY >= textRect.top && vpY <= textRect.bottom) {
-                            alphaMult = 0.12;
+                            alphaMult = 0.08;
                         }
                     }
                     nodes[i].draw(alphaMult);
