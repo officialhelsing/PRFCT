@@ -30,9 +30,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
         html, body {
             height: 100%;
@@ -109,8 +106,10 @@
 </head>
 <body class="h-full relative flex flex-col justify-between selection:bg-stone-300 selection:text-charcoal bg-[#D6D1C6]">
 
+    <!-- Initial blank screen for smooth load -->
     <div id="blank-view" class="absolute inset-0 z-30 flex items-center justify-center bg-[#D6D1C6] pointer-events-none"></div>
 
+    <!-- Typing animation introductory screen -->
     <div id="landing-view" class="absolute inset-0 z-25 flex items-center justify-center bg-[#D6D1C6] opacity-0 pointer-events-none">
         <div class="px-6 py-6 text-center select-none max-w-lg w-full flex flex-col items-center justify-center">
             <h2 class="serif-title text-charcoal text-[1.35rem] sm:text-[1.6rem] md:text-[1.85rem] font-light leading-[1.22] tracking-tight py-1 min-h-[3rem] flex items-center justify-center">
@@ -119,6 +118,7 @@
         </div>
     </div>
 
+    <!-- Main view with node canvas and justified text block -->
     <main id="main-view" class="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-8 opacity-0 transition-opacity duration-[2500ms] ease-in-out pointer-events-none bg-transparent overflow-hidden">
         <canvas id="node-canvas"></canvas>
 
@@ -130,13 +130,21 @@
                     
                     <h1 class="serif-title text-charcoal text-[1.15rem] sm:text-[1.35rem] md:text-[1.45rem] font-light leading-[1.35] tracking-tight cursor-default" style="text-align: justify; text-align-last: right;">
                         <span class="font-sans font-normal not-italic text-stone-600">| Perpetual Reach Frontier Capital Trades</span> operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring tailored financial positioning, hedging architecture, and quantitative risk 
-                        <a href="mailto:ryan.global@proton.me" class="hidden md:inline font-sans text-[0.82rem] tracking-wide text-stone-500 hover:text-stone-900 transition-colors duration-300 font-medium no-underline align-baseline mx-2">ryan.global@proton.me |</a>
+                        
+                        <!-- Desktop inline email positioned in whitespace gap with absolute-positioned zero-width copied notification -->
+                        <span class="hidden md:inline-block relative align-baseline mx-1">
+                            <span id="copied-notif-desktop" class="absolute right-full top-1/2 -translate-y-1/2 mr-1.5 font-sans text-[0.6rem] tracking-wider text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none whitespace-nowrap">copied</span>
+                            <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'desktop')" class="font-sans text-[0.78rem] sm:text-[0.82rem] tracking-wide text-stone-700 hover:text-stone-900 transition-colors duration-300 font-normal no-underline align-baseline">ryan.global@proton.me |</a>
+                        </span>
+                        
                         models across global commodity markets.
                     </h1>
                 </div>
 
-                <div class="w-full flex justify-end items-center pt-2 md:hidden">
-                    <a href="mailto:ryan.global@proton.me" class="text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-500 hover:text-stone-900 transition-colors duration-300 font-medium no-underline">
+                <!-- Mobile email view with copied notification -->
+                <div class="w-full flex justify-end items-center pt-2 md:hidden relative">
+                    <span id="copied-notif-mobile" class="absolute right-[calc(100%-1rem)] font-sans text-[0.65rem] tracking-wide text-stone-500 opacity-0 transition-opacity duration-300 pointer-events-none select-none mr-2">copied</span>
+                    <a href="mailto:ryan.global@proton.me" onclick="copyEmail(event, 'mobile')" class="font-sans text-[0.8rem] sm:text-[0.88rem] tracking-wide text-stone-700 hover:text-stone-900 transition-colors duration-300 font-normal no-underline">
                         ryan.global@proton.me |
                     </a>
                 </div>
@@ -146,6 +154,33 @@
     </main>
 
     <script>
+        function copyEmail(e, type) {
+            e.preventDefault();
+            const email = "ryan.global@proton.me";
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = email;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+            }
+            document.body.removeChild(textArea);
+
+            const notifId = type === 'desktop' ? 'copied-notif-desktop' : 'copied-notif-mobile';
+            const notifEl = document.getElementById(notifId);
+            if (notifEl) {
+                notifEl.style.opacity = '1';
+                setTimeout(() => {
+                    notifEl.style.opacity = '0';
+                }, 1500);
+            }
+        }
+
         function initNodeCanvas() {
             const canvas = document.getElementById('node-canvas');
             if (!canvas) return;
@@ -154,10 +189,9 @@
             let width, height;
             let nodes = [];
             
-            // Optimized densities: High density on web/desktop so it is clearly visible, balanced on mobile
             const isDesktop = window.innerWidth >= 768;
-            const nodeCount = isDesktop ? 360 : 110; 
-            const connectionDistance = isDesktop ? 150 : 110;
+            const nodeCount = isDesktop ? 480 : 110; 
+            const connectionDistance = isDesktop ? 190 : 110;
             const dpr = window.devicePixelRatio || 1;
 
             function resize() {
@@ -184,7 +218,7 @@
                     this.vx = (Math.random() - 0.5) * 0.45;
                     this.vy = (Math.random() - 0.5) * 0.45;
                     this.radius = Math.random() * (isDesktop ? 1.9 : 1.4) + 0.5;
-                    this.baseAlpha = Math.random() * 0.8 + 0.2; // Variable opacity for depth
+                    this.baseAlpha = Math.random() * 0.8 + 0.2;
                 }
 
                 update() {
@@ -231,7 +265,7 @@
                         const vpX = nodes[i].x - window.innerWidth * 0.3;
                         const vpY = nodes[i].y - window.innerHeight * 0.3;
                         if (vpX >= textRect.left && vpX <= textRect.right && vpY >= textRect.top && vpY <= textRect.bottom) {
-                            alphaMult = 0.12; // Soft lower opacity behind text box for absolute legibility
+                            alphaMult = 0.12;
                         }
                     }
 
