@@ -165,14 +165,6 @@
             background: rgba(214, 209, 198, 0.75);
         }
 
-        /* Mobile reduction specifically for page two content footprint */
-        @media (max-width: 768px) {
-            #page-two-content {
-                transform: scale(0.7);
-                transform-origin: center;
-            }
-        }
-
         #webgl-container {
             position: absolute;
             inset: 0;
@@ -479,6 +471,7 @@
             });
 
             const particleSystem = new THREE.Points(geometry, material);
+            particleSystem.scale.set(0.4, 0.4, 0.4);
             scene.add(particleSystem);
 
             const lineGeo = new THREE.BufferGeometry();
@@ -502,6 +495,7 @@
                 opacity: 0.12
             });
             const wireframe = new THREE.LineSegments(lineGeo, lineMat);
+            wireframe.scale.set(0.4, 0.4, 0.4);
             scene.add(wireframe);
 
             let mouseX = 0, mouseY = 0;
