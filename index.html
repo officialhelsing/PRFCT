@@ -231,16 +231,16 @@
                 </div>
 
                 <!-- Mobile Portrait Only View -->
-                <div class="portrait-content w-full flex-col items-center justify-center text-center space-y-1.5">
+                <div class="portrait-content w-full flex-col items-center justify-center text-center space-y-1">
                     <div class="relative inline-flex flex-col items-center text-center">
                         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
-                        <h1 id="portrait-brand" class="text-[2.3rem] sm:text-[2.65rem] font-sans font-medium tracking-[0.2em] text-center whitespace-nowrap">
+                        <h1 class="text-[2rem] sm:text-[2.35rem] font-sans font-medium tracking-[0.2em] text-center whitespace-nowrap">
                             <span class="portrait-color-gradient inline-block">
                                 PRFCT
                             </span>
                         </h1>
-                        <div id="portrait-sub" class="text-center serif-title text-stone-500 font-light lowercase mt-1 whitespace-nowrap" style="letter-spacing: 0.175em;">
-                            turn me...
+                        <div class="text-center serif-title text-[1.1rem] sm:text-[1.3rem] tracking-[0.105em] text-stone-500 font-light lowercase mt-0.5 whitespace-nowrap">
+                            now turn me...
                         </div>
                     </div>
                 </div>
@@ -250,34 +250,6 @@
     </section>
 
     <script>
-        function matchPortraitSubwidth() {
-            const brandEl = document.getElementById('portrait-brand');
-            const subEl = document.getElementById('portrait-sub');
-            if (brandEl && subEl) {
-                // Reset styling to read natural widths
-                subEl.style.fontSize = '';
-                const brandWidth = brandEl.getBoundingClientRect().width;
-                if (brandWidth > 0) {
-                    let subFontSize = parseFloat(window.getComputedStyle(brandEl).fontSize) * 0.44;
-                    subEl.style.fontSize = subFontSize + 'px';
-                    
-                    // Fine-tune until sub width exactly equals brand width
-                    let subWidth = subEl.getBoundingClientRect().width;
-                    let iterations = 0;
-                    while (Math.abs(subWidth - brandWidth) > 0.5 && iterations < 15) {
-                        if (subWidth > brandWidth) {
-                            subFontSize -= 0.5;
-                        } else {
-                            subFontSize += 0.5;
-                        }
-                        subEl.style.fontSize = subFontSize + 'px';
-                        subWidth = subEl.getBoundingClientRect().width;
-                        iterations++;
-                    }
-                }
-            }
-        }
-
         function updateScaling() {
             const scaler = document.querySelector('.responsive-scaler');
             if (!scaler) return;
@@ -293,7 +265,6 @@
             let scale = Math.min(scaleX, scaleY, 1);
 
             scaler.style.transform = `scale(${Math.max(0.35, scale)})`;
-            matchPortraitSubwidth();
         }
 
         window.addEventListener('resize', updateScaling);
@@ -462,7 +433,6 @@
                     if (contourCanvas) {
                         contourCanvas.style.opacity = '1';
                     }
-                    matchPortraitSubwidth();
                 }, 800);
             }
         });
