@@ -239,8 +239,8 @@
                                 PRFCT
                             </span>
                         </h1>
-                        <div class="text-center serif-title text-[0.95rem] sm:text-[1.1rem] tracking-[0.09em] text-stone-500 font-light lowercase mt-1 whitespace-nowrap">
-                            turn for audio
+                        <div class="text-center serif-title text-[1.1rem] sm:text-[1.3rem] tracking-[0.105em] text-stone-500 font-light lowercase mt-0.5 whitespace-nowrap">
+                            now turn me...
                         </div>
                     </div>
                 </div>
@@ -250,58 +250,6 @@
     </section>
 
     <script>
-        let audioPlayed = false;
-
-        function playOrientationAudio() {
-            if (audioPlayed) return;
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const text = "Welcome to PRFCT. Perpetual Research Frontier Capital Theory operates as a discreet independent advisor to sovereign treasuries, institutional capital pools, and private family offices, structuring comprehensive tailored financial positioning, sophisticated hedging architecture, and quantitative risk models across global commodity markets. When you're dealing with real wealth, you need to be perfect. We look forward to hearing from you.";
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = 0.92;
-                utterance.pitch = 0.95;
-                
-                const voices = window.speechSynthesis.getVoices();
-                const preferredVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Premium') || v.name.includes('Google') || v.name.includes('Oliver') || v.name.includes('Arthur'))) || voices[0];
-                if (preferredVoice) {
-                    utterance.voice = preferredVoice;
-                }
-
-                window.speechSynthesis.speak(utterance);
-                audioPlayed = true;
-            }
-        }
-
-        function checkOrientationAndAudio() {
-            const isLandscape = window.innerWidth > window.innerHeight;
-            if (isLandscape) {
-                playOrientationAudio();
-            }
-        }
-
-        window.addEventListener('resize', () => {
-            updateScaling();
-            checkOrientationAndAudio();
-        });
-
-        window.addEventListener('orientationchange', () => {
-            setTimeout(checkOrientationAndAudio, 350);
-        });
-
-        // Ensure voice list is loaded if browser delays voices
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.onvoiceschanged = () => {
-                checkOrientationAndAudio();
-            };
-        }
-
-        // Allow click to unlock audio on mobile browsers
-        document.addEventListener('click', () => {
-            if (window.innerWidth > window.innerHeight) {
-                playOrientationAudio();
-            }
-        }, { once: true });
-
         function updateScaling() {
             const scaler = document.querySelector('.responsive-scaler');
             if (!scaler) return;
@@ -317,6 +265,8 @@
 
             scaler.style.transform = `scale(${Math.max(0.35, scale)})`;
         }
+
+        window.addEventListener('resize', updateScaling);
 
         function copyEmail(e) {
             e.preventDefault();
@@ -409,6 +359,11 @@
                 requestAnimationFrame(animate);
             }
 
+            window.addEventListener('resize', () => {
+                resize();
+                updateScaling();
+            });
+
             resize();
             updateScaling();
             animate();
@@ -477,8 +432,6 @@
                     if (contourCanvas) {
                         contourCanvas.style.opacity = '1';
                     }
-
-                    checkOrientationAndAudio();
                 }, 800);
             }
         });
