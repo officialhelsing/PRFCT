@@ -239,8 +239,8 @@
                                 PRFCT
                             </span>
                         </h1>
-                        <div class="text-center serif-title text-[1.1rem] sm:text-[1.3rem] tracking-[0.105em] text-stone-500 font-light lowercase mt-0.5 whitespace-nowrap">
-                            turn for audio...
+                        <div class="text-center serif-title text-[0.95rem] sm:text-[1.1rem] tracking-[0.09em] text-stone-500 font-light lowercase mt-1 whitespace-nowrap">
+                            turn for audio
                         </div>
                     </div>
                 </div>
@@ -285,9 +285,17 @@
         });
 
         window.addEventListener('orientationchange', () => {
-            setTimeout(checkOrientationAndAudio, 300);
+            setTimeout(checkOrientationAndAudio, 350);
         });
 
+        // Ensure voice list is loaded if browser delays voices
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                checkOrientationAndAudio();
+            };
+        }
+
+        // Allow click to unlock audio on mobile browsers
         document.addEventListener('click', () => {
             if (window.innerWidth > window.innerHeight) {
                 playOrientationAudio();
