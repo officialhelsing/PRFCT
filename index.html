@@ -231,7 +231,7 @@
                 </div>
 
                 <!-- Mobile Portrait Only View -->
-                <div class="portrait-content w-full flex-col items-center justify-center text-center space-y-1">
+                <div class="portrait-content w-full flex-col items-center justify-center text-center space-y-2">
                     <div class="relative inline-flex flex-col items-center text-center">
                         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,209,198,0.96)_35%,rgba(214,209,198,0.78)_65%,transparent_100%)] blur-md -z-10 pointer-events-none"></div>
                         <h1 class="text-[2rem] sm:text-[2.35rem] font-sans font-medium tracking-[0.2em] text-center whitespace-nowrap">
@@ -239,8 +239,8 @@
                                 PRFCT
                             </span>
                         </h1>
-                        <div class="text-center serif-title text-[1.1rem] sm:text-[1.3rem] tracking-[0.105em] text-stone-500 font-light lowercase mt-0.5 whitespace-nowrap">
-                            now turn me...
+                        <div id="subtext-container" class="w-full flex justify-center mt-1">
+                            <div id="subtext-measurer" class="text-stone-500 font-light lowercase whitespace-nowrap" style="font-family: 'Cormorant Garamond', serif;">turn me...</div>
                         </div>
                     </div>
                 </div>
@@ -250,13 +250,43 @@
     </section>
 
     <script>
+        function updatePortraitSubtextWidth() {
+            const prfctHeading = document.querySelector('.portrait-content h1');
+            const subtext = document.getElementById('subtext-measurer');
+            if (!prfctHeading || !subtext) return;
+
+            // Reset scale/style to measure natural width
+            subtext.style.fontSize = '1.3rem';
+            subtext.style.letterSpacing = '0.05em';
+            
+            const targetWidth = prfctHeading.getBoundingClientRect().width;
+            if (targetWidth === 0) return;
+
+            // Iteratively adjust font size and letter spacing so "turn me..." matches PRFCT's exact pixel width
+            let size = 1.0;
+            let tracking = 0.05;
+            subtext.style.fontSize = size + 'rem';
+            subtext.style.letterSpacing = tracking + 'em';
+
+            for (let i = 0; i < 15; i++) {
+                const currentWidth = subtext.getBoundingClientRect().width;
+                if (Math.abs(currentWidth - targetWidth) < 0.5) break;
+                
+                const ratio = targetWidth / currentWidth;
+                size = size * ratio;
+                tracking = tracking * ratio;
+                
+                subtext.style.fontSize = size + 'rem';
+                subtext.style.letterSpacing = tracking + 'em';
+            }
+        }
+
         function updateScaling() {
             const scaler = document.querySelector('.responsive-scaler');
             if (!scaler) return;
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
             
-            // Calculate scale based on both width and height to fit mobile landscape neatly
             const targetWidth = 630;
             const targetHeight = 280;
 
@@ -265,6 +295,7 @@
             let scale = Math.min(scaleX, scaleY, 1);
 
             scaler.style.transform = `scale(${Math.max(0.35, scale)})`;
+            updatePortraitSubtextWidth();
         }
 
         window.addEventListener('resize', updateScaling);
@@ -433,6 +464,7 @@
                     if (contourCanvas) {
                         contourCanvas.style.opacity = '1';
                     }
+                    updatePortraitSubtextWidth();
                 }, 800);
             }
         });
